@@ -1,9 +1,12 @@
 User-agent: *
 Allow: /
 
+# Disallow admin API routes from indexing
+Disallow: /api/
+
 # Disallow legal pages from indexing
 Disallow: /privacy
 Disallow: /terms
 
 # Sitemap
-Sitemap: https://hdzrevamped.com/sitemap.xml
+Sitemap: https://hdzrevamped.vercel.app/sitemap.xml

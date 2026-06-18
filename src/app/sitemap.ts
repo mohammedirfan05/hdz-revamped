@@ -1,7 +1,9 @@
 import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://hdzrevamped.com";
+  // Update baseUrl when you move to a custom domain
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://hdzrevamped.vercel.app";
   const now = new Date();
 
   return [

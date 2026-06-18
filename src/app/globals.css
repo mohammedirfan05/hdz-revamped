@@ -24,6 +24,15 @@
   --gray-bg:     #f4f6fb;
   --sage:        #4a7c59;
 
+  /* Blue aliases — used throughout pages (maps to royal blue) */
+  --blue:        #295DFF;
+  --blue-dark:   #1a45d4;
+  --blue-light:  rgba(41,93,255,0.12);
+
+  /* Success / error semantic colors */
+  --success:     #16a34a;
+  --error:       #dc2626;
+
   /* Gradients */
   --gradient-hero:    linear-gradient(135deg, #081A37 0%, #0d2347 50%, #132d5e 100%);
   --gradient-gold:    linear-gradient(135deg, #D4A84A 0%, #e8c56e 100%);
@@ -127,10 +136,56 @@ p  { line-height: 1.75; }
 @media (min-width: 768px)  { .container { padding: 0 2.5rem; } }
 @media (min-width: 1200px) { .container { padding: 0 3rem; } }
 
-.section-py { padding: var(--section-py) 0; }
+.section-py      { padding: var(--section-py) 0; }
+.section-padding { padding: var(--section-py) 0; }
 
 @media (max-width: 768px) {
   :root { --section-py: 4.5rem; }
+}
+
+/* ══════════════════════════════════════════════════════════
+   SECTION TYPOGRAPHY UTILITIES
+══════════════════════════════════════════════════════════ */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--royal);
+  background: var(--royal-light);
+  border: 1px solid rgba(41,93,255,0.2);
+  border-radius: var(--radius-full);
+  padding: 0.3rem 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  font-weight: 800;
+  color: var(--navy);
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+}
+
+.section-subtitle {
+  font-size: 1.05rem;
+  color: var(--gray-text);
+  line-height: 1.75;
+  max-width: 560px;
+}
+
+.divider {
+  width: 48px;
+  height: 3px;
+  background: linear-gradient(135deg, #D4A84A 0%, #e8c56e 100%);
+  border-radius: 3px;
+  margin: 1rem 0 1.5rem;
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -216,6 +271,42 @@ p  { line-height: 1.75; }
 .btn-outline:hover {
   background: var(--navy);
   color: var(--white);
+  transform: translateY(-2px);
+}
+
+/* Secondary — Surface */
+.btn-secondary {
+  background: var(--gray-bg);
+  color: var(--navy);
+  border: 1.5px solid var(--gray-border);
+}
+.btn-secondary:hover {
+  background: var(--gray-border);
+  transform: translateY(-2px);
+}
+
+/* White — for use on dark/colored backgrounds */
+.btn-white {
+  background: #ffffff;
+  color: var(--navy);
+  border: none;
+  font-weight: 800;
+}
+.btn-white:hover {
+  background: #f0f4ff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255,255,255,0.2);
+}
+
+/* Outline White — ghost on dark backgrounds */
+.btn-outline-white {
+  background: transparent;
+  color: #ffffff;
+  border: 2px solid rgba(255,255,255,0.5);
+}
+.btn-outline-white:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: #ffffff;
   transform: translateY(-2px);
 }
 
@@ -386,10 +477,17 @@ p  { line-height: 1.75; }
   to   { width: 100%; }
 }
 
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
 .animate-fade-up   { animation: fadeInUp 0.65s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
 .animate-fade-left { animation: fadeInLeft 0.65s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
 .animate-scale-in  { animation: scaleIn 0.65s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
 .animate-float     { animation: float 4s ease-in-out infinite; }
+/* Tailwind compat — used by Loader2 spinner in QuoteForm */
+.animate-spin, .spin-icon { animation: spin 1s linear infinite; }
 
 /* Staggered delays */
 .delay-100 { animation-delay: 0.1s; }
@@ -703,4 +801,42 @@ p  { line-height: 1.75; }
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE — Mobile & Tablet Fixes
+══════════════════════════════════════════════════════════ */
+
+/* Page hero: center text on mobile */
+@media (max-width: 768px) {
+  .page-hero { padding: 6rem 0 3.5rem; text-align: center; }
+  .page-hero p { margin: 0 auto; }
+
+  /* Section labels centered on mobile */
+  .section-label { display: inline-flex; }
+
+  /* Ensure touch targets are large enough */
+  .form-input, select.form-input, textarea.form-input {
+    min-height: 48px;
+    font-size: 1rem; /* Prevent iOS zoom on focus */
+  }
+
+  /* Ensure buttons span full-width in tight containers */
+  .btn { min-height: 48px; }
+
+  /* Stack section-subtitle to full width */
+  .section-subtitle { max-width: 100%; }
+}
+
+/* Tablet */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .page-hero { padding: 7rem 0 4rem; }
+}
+
+/* Prevent overflow on small screens */
+@media (max-width: 480px) {
+  h1 { font-size: clamp(2rem, 8vw, 3rem); }
+  h2 { font-size: clamp(1.5rem, 6vw, 2.25rem); }
+  .text-hero { font-size: clamp(2rem, 9vw, 3.5rem); }
+  .text-display { font-size: clamp(1.5rem, 7vw, 2.5rem); }
 }

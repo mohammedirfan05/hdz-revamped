@@ -7,6 +7,7 @@ import { z } from "zod";
 import { Send, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 import { SERVICES, CONTACT } from "@/data/siteData";
 
+// ─── Validation schema (mirrors server-side validation) ──────────────────────
 const schema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   phone: z
@@ -15,7 +16,9 @@ const schema = z.object({
     .regex(/^[\d\s\-\+\(\)]+$/, "Invalid phone number format"),
   email: z.string().email("Please enter a valid email address"),
   service: z.string().min(1, "Please select a service"),
-  message: z.string().min(10, "Please describe your project (at least 10 characters)"),
+  message: z
+    .string()
+    .min(10, "Please describe your project (at least 10 characters)"),
   contactMethod: z.enum(["phone", "email", "either"]),
   // Honeypot field — must remain empty
   website: z.string().max(0, "").optional(),
@@ -28,7 +31,10 @@ interface QuoteFormProps {
   compact?: boolean;
 }
 
-export default function QuoteForm({ preselectedService, compact = false }: QuoteFormProps) {
+export default function QuoteForm({
+  preselectedService,
+  compact = false,
+}: QuoteFormProps) {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -45,53 +51,43 @@ export default function QuoteForm({ preselectedService, compact = false }: Quote
     },
   });
 
+  // ─── Submit handler — purely client-side fetch, no secrets ────────────────
   const onSubmit = async (data: FormData) => {
-    // Honeypot check
+    // Honeypot: silently block bot submissions
     if (data.website) return;
 
     setStatus("loading");
     setErrorMessage("");
 
     try {
-      // Use EmailJS to send form — configure with your EmailJS account
-      // For now, we simulate a successful send and provide mailto fallback
-      const emailJsServiceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-      const emailJsTemplateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-      const emailJsPublicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+      const res = await fetch("/api/send-quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
 
-      if (emailJsServiceId && emailJsTemplateId && emailJsPublicKey) {
-        const emailjs = await import("@emailjs/browser");
-        await emailjs.send(
-          emailJsServiceId,
-          emailJsTemplateId,
-          {
-            from_name: data.name,
-            from_email: data.email,
-            from_phone: data.phone,
-            service_type: data.service,
-            message: data.message,
-            preferred_contact: data.contactMethod,
-            to_email: CONTACT.email,
-          },
-          emailJsPublicKey
+      const result = await res.json();
+
+      if (!res.ok || !result.success) {
+        throw new Error(
+          result.error ||
+            "Something went wrong. Please call us directly or try again."
         );
-      } else {
-        // Fallback: open mailto with prefilled content
-        const subject = encodeURIComponent(`Quote Request: ${data.service} — ${data.name}`);
-        const body = encodeURIComponent(
-          `Name: ${data.name}\nPhone: ${data.phone}\nEmail: ${data.email}\nService: ${data.service}\nPreferred Contact: ${data.contactMethod}\n\nProject Details:\n${data.message}`
-        );
-        window.location.href = `mailto:${CONTACT.email}?subject=${subject}&body=${body}`;
       }
 
       setStatus("success");
       reset();
-    } catch {
+    } catch (err: unknown) {
       setStatus("error");
-      setErrorMessage("Something went wrong. Please call us directly or try again.");
+      setErrorMessage(
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please call us directly or try again."
+      );
     }
   };
 
+  // ─── Success state ────────────────────────────────────────────────────────
   if (status === "success") {
     return (
       <div
@@ -105,18 +101,24 @@ export default function QuoteForm({ preselectedService, compact = false }: Quote
           gap: "1rem",
         }}
       >
-        <CheckCircle size={56} color="var(--success)" strokeWidth={1.5} />
-        <h3 style={{ color: "var(--navy)", marginTop: "0.5rem" }}>Quote Request Sent!</h3>
+        <CheckCircle size={56} color="var(--success, #16a34a)" strokeWidth={1.5} />
+        <h3 style={{ color: "var(--navy)", marginTop: "0.5rem" }}>
+          Quote Request Sent!
+        </h3>
         <p style={{ color: "var(--gray-text)", maxWidth: "380px" }}>
-          Thank you! We&apos;ll get back to you within 24 hours. For faster service, call us at{" "}
-          <a href={`tel:${CONTACT.phone}`} style={{ color: "var(--blue)", fontWeight: 600 }}>
+          Thank you! We&apos;ll get back to you within 24 hours. For faster
+          service, call us at{" "}
+          <a
+            href={`tel:${CONTACT.phone}`}
+            style={{ color: "var(--royal)", fontWeight: 600 }}
+          >
             {CONTACT.phoneDisplay}
           </a>
           .
         </p>
         <button
           onClick={() => setStatus("idle")}
-          className="btn btn-secondary"
+          className="btn btn-outline"
           style={{ marginTop: "0.5rem" }}
         >
           Send Another Request
@@ -125,15 +127,23 @@ export default function QuoteForm({ preselectedService, compact = false }: Quote
     );
   }
 
+  // ─── Form ─────────────────────────────────────────────────────────────────
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
-      {/* Honeypot */}
+      {/* Honeypot — hidden from real users, bots will fill it */}
       <input
         type="text"
         {...register("website")}
         aria-hidden="true"
         tabIndex={-1}
-        style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0 }}
+        style={{
+          position: "absolute",
+          left: "-9999px",
+          opacity: 0,
+          height: 0,
+          width: 0,
+        }}
+        autoComplete="off"
       />
 
       <div
@@ -143,7 +153,7 @@ export default function QuoteForm({ preselectedService, compact = false }: Quote
           gap: "1.25rem",
         }}
       >
-        {/* Name */}
+        {/* Full Name */}
         <div className="form-group">
           <label htmlFor="quote-name" className="form-label">
             Full Name <span style={{ color: "#ef4444" }}>*</span>
@@ -156,7 +166,9 @@ export default function QuoteForm({ preselectedService, compact = false }: Quote
             autoComplete="name"
             {...register("name")}
           />
-          {errors.name && <span className="form-error">{errors.name.message}</span>}
+          {errors.name && (
+            <span className="form-error">{errors.name.message}</span>
+          )}
         </div>
 
         {/* Phone */}
@@ -172,7 +184,9 @@ export default function QuoteForm({ preselectedService, compact = false }: Quote
             autoComplete="tel"
             {...register("phone")}
           />
-          {errors.phone && <span className="form-error">{errors.phone.message}</span>}
+          {errors.phone && (
+            <span className="form-error">{errors.phone.message}</span>
+          )}
         </div>
 
         {/* Email */}
@@ -188,7 +202,9 @@ export default function QuoteForm({ preselectedService, compact = false }: Quote
             autoComplete="email"
             {...register("email")}
           />
-          {errors.email && <span className="form-error">{errors.email.message}</span>}
+          {errors.email && (
+            <span className="form-error">{errors.email.message}</span>
+          )}
         </div>
 
         {/* Service */}
@@ -211,7 +227,9 @@ export default function QuoteForm({ preselectedService, compact = false }: Quote
             <option value="Multiple Services">Multiple Services</option>
             <option value="Other">Other / Not Sure</option>
           </select>
-          {errors.service && <span className="form-error">{errors.service.message}</span>}
+          {errors.service && (
+            <span className="form-error">{errors.service.message}</span>
+          )}
         </div>
 
         {/* Preferred Contact */}
@@ -231,8 +249,11 @@ export default function QuoteForm({ preselectedService, compact = false }: Quote
           </select>
         </div>
 
-        {/* Message — full width */}
-        <div className="form-group" style={{ gridColumn: compact ? undefined : "1 / -1" }}>
+        {/* Project Details — full width */}
+        <div
+          className="form-group"
+          style={{ gridColumn: compact ? undefined : "1 / -1" }}
+        >
           <label htmlFor="quote-message" className="form-label">
             Project Details <span style={{ color: "#ef4444" }}>*</span>
           </label>
@@ -244,13 +265,16 @@ export default function QuoteForm({ preselectedService, compact = false }: Quote
             style={{ resize: "vertical", minHeight: compact ? "80px" : "120px" }}
             {...register("message")}
           />
-          {errors.message && <span className="form-error">{errors.message.message}</span>}
+          {errors.message && (
+            <span className="form-error">{errors.message.message}</span>
+          )}
         </div>
       </div>
 
       {/* Error state */}
       {status === "error" && (
         <div
+          role="alert"
           style={{
             display: "flex",
             alignItems: "center",
@@ -270,17 +294,26 @@ export default function QuoteForm({ preselectedService, compact = false }: Quote
       )}
 
       {/* Submit */}
-      <div style={{ marginTop: "1.5rem", display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
+      <div
+        style={{
+          marginTop: "1.5rem",
+          display: "flex",
+          alignItems: "center",
+          gap: "1rem",
+          flexWrap: "wrap",
+        }}
+      >
         <button
           type="submit"
           className="btn btn-primary"
           disabled={status === "loading"}
           id="quote-form-submit"
           style={{ minWidth: "180px" }}
+          aria-live="polite"
         >
           {status === "loading" ? (
             <>
-              <Loader2 size={18} className="animate-spin" />
+              <Loader2 size={18} className="spin-icon" />
               Sending…
             </>
           ) : (
