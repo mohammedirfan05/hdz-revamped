@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import GlobalEffects from "@/components/GlobalEffects";
 
 export const metadata: Metadata = {
   title: {
@@ -98,8 +99,16 @@ export default function RootLayout({
         />
       </head>
       <body>
+        {/* Scroll progress indicator — 2px gold bar at top */}
+        <div className="scroll-progress-bar" aria-hidden="true" />
+        {/* Global IntersectionObserver + progress bar wiring */}
+        <GlobalEffects />
+        {/* Skip to content — visible on focus for keyboard/AT users */}
+        <a href="#main-content" className="skip-link">
+          Skip to main content
+        </a>
         <Navbar />
-        <main>{children}</main>
+        <main id="main-content">{children}</main>
         <Footer />
       </body>
     </html>

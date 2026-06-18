@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Phone, Menu, X, Shield } from "lucide-react";
 import { CONTACT } from "@/data/siteData";
 import { cn } from "@/lib/utils";
@@ -18,6 +19,7 @@ const navLinks = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -30,6 +32,9 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
 
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
+
   return (
     <>
       <header
@@ -39,12 +44,12 @@ export default function Navbar() {
         )}
         style={{
           background: scrolled
-            ? "rgba(8,26,55,0.95)"
-            : "linear-gradient(to bottom, rgba(8,26,55,0.85) 0%, transparent 100%)",
-          backdropFilter: scrolled ? "blur(20px)" : "blur(8px)",
-          WebkitBackdropFilter: scrolled ? "blur(20px)" : "blur(8px)",
-          borderBottom: scrolled ? "1px solid rgba(255,255,255,0.08)" : "none",
-          boxShadow: scrolled ? "0 8px 32px rgba(8,26,55,0.3)" : "none",
+            ? "rgba(8,26,55,0.96)"
+            : "linear-gradient(to bottom, rgba(8,26,55,0.9) 0%, transparent 100%)",
+          backdropFilter: scrolled ? "blur(24px)" : "blur(6px)",
+          WebkitBackdropFilter: scrolled ? "blur(24px)" : "blur(6px)",
+          borderBottom: scrolled ? "1px solid rgba(255,255,255,0.07)" : "none",
+          boxShadow: scrolled ? "0 4px 32px rgba(8,26,55,0.25)" : "none",
         }}
       >
         <div className="container">
@@ -60,12 +65,12 @@ export default function Navbar() {
               onClick={() => setIsOpen(false)}
               aria-label="HDZ Revamped - Home"
             >
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "44px" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "40px" }}>
                 <Image
                   src="/images/logo/logo.png"
                   alt="HDZ Revamped Logo"
-                  width={44}
-                  height={44}
+                  width={40}
+                  height={40}
                   style={{ objectFit: "contain", width: "100%", height: "auto" }}
                   priority
                   onError={(e) => {
@@ -76,9 +81,9 @@ export default function Navbar() {
               <div>
                 <span
                   style={{
-                    fontFamily: "Plus Jakarta Sans, sans-serif",
+                    fontFamily: "Outfit, sans-serif",
                     fontWeight: 800,
-                    fontSize: "1.15rem",
+                    fontSize: "1.1rem",
                     color: "#ffffff",
                     letterSpacing: "-0.03em",
                     display: "block",
@@ -89,50 +94,53 @@ export default function Navbar() {
                 </span>
                 <span
                   style={{
-                    fontSize: "0.65rem",
+                    fontSize: "0.62rem",
                     color: "var(--gold)",
                     fontWeight: 600,
                     letterSpacing: "0.1em",
                     textTransform: "uppercase",
                   }}
                 >
-                  Painting & Drywall
+                  Painting &amp; Drywall
                 </span>
               </div>
             </Link>
 
             {/* Desktop Nav — Pill Container */}
-            <div
+            <nav
+              aria-label="Site navigation"
               className="hidden md:flex items-center"
               style={{
-                background: "rgba(255,255,255,0.07)",
+                background: "rgba(255,255,255,0.06)",
                 backdropFilter: "blur(12px)",
-                border: "1px solid rgba(255,255,255,0.1)",
+                border: "1px solid rgba(255,255,255,0.09)",
                 borderRadius: "var(--radius-full)",
-                padding: "0.375rem",
-                gap: "0.25rem",
+                padding: "0.35rem",
+                gap: "0.2rem",
               }}
             >
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  style={{
-                    padding: "0.45rem 1.1rem",
-                    borderRadius: "var(--radius-full)",
-                    fontSize: "0.875rem",
-                    fontWeight: 600,
-                    color: "rgba(255,255,255,0.85)",
-                    transition: "all 0.2s ease",
-                    letterSpacing: "-0.01em",
-                    fontFamily: "Plus Jakarta Sans, sans-serif",
-                  }}
-                  className="nav-link-pill"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
+              {navLinks.map((link) => {
+                const active = isActive(link.href);
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="nav-link-pill"
+                    aria-current={active ? "page" : undefined}
+                    style={
+                      active
+                        ? {
+                            background: "rgba(255,255,255,0.13)",
+                            color: "#ffffff",
+                          }
+                        : {}
+                    }
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </nav>
 
             {/* Desktop CTA */}
             <div className="hidden md:flex items-center gap-3">
@@ -141,21 +149,22 @@ export default function Navbar() {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: "0.4rem",
-                  background: "var(--gold-light)",
-                  border: "1px solid rgba(212,168,74,0.3)",
+                  gap: "0.375rem",
+                  background: "rgba(201,168,76,0.1)",
+                  border: "1px solid rgba(201,168,76,0.25)",
                   borderRadius: "var(--radius-full)",
-                  padding: "0.35rem 0.875rem",
+                  padding: "0.3rem 0.85rem",
                 }}
               >
-                <Shield size={12} color="var(--gold)" />
+                <Shield size={11} color="var(--gold)" aria-hidden="true" />
                 <span
                   style={{
-                    fontSize: "0.7rem",
+                    fontSize: "0.67rem",
                     color: "var(--gold)",
                     fontWeight: 700,
                     letterSpacing: "0.06em",
                     textTransform: "uppercase",
+                    fontFamily: "Outfit, sans-serif",
                   }}
                 >
                   Lic. {CONTACT.license}
@@ -170,22 +179,22 @@ export default function Navbar() {
                   display: "flex",
                   alignItems: "center",
                   gap: "0.4rem",
-                  color: "rgba(255,255,255,0.85)",
+                  color: "rgba(255,255,255,0.82)",
                   fontWeight: 600,
                   fontSize: "0.875rem",
                   transition: "color 0.15s ease",
-                  fontFamily: "Plus Jakarta Sans, sans-serif",
+                  fontFamily: "Outfit, sans-serif",
                 }}
                 className="hover:text-white"
               >
-                <Phone size={15} strokeWidth={2.5} />
+                <Phone size={14} strokeWidth={2.5} aria-hidden="true" />
                 {CONTACT.phoneDisplay}
               </a>
 
               <Link
                 href="/contact"
                 className="btn btn-gold"
-                style={{ padding: "0.55rem 1.35rem", fontSize: "0.875rem", minHeight: "40px" }}
+                style={{ padding: "0.5rem 1.3rem", fontSize: "0.875rem", minHeight: "40px" }}
                 id="navbar-quote-btn"
               >
                 Free Quote
@@ -197,8 +206,8 @@ export default function Navbar() {
               className="flex md:hidden items-center justify-center"
               style={{
                 color: "#ffffff",
-                background: "rgba(255,255,255,0.1)",
-                border: "1px solid rgba(255,255,255,0.15)",
+                background: "rgba(255,255,255,0.09)",
+                border: "1px solid rgba(255,255,255,0.13)",
                 borderRadius: "10px",
                 width: "44px",
                 height: "44px",
@@ -207,20 +216,21 @@ export default function Navbar() {
               onClick={() => setIsOpen(!isOpen)}
               aria-label={isOpen ? "Close menu" : "Open menu"}
               aria-expanded={isOpen}
+              aria-controls="mobile-menu"
             >
-              {isOpen ? <X size={20} /> : <Menu size={20} />}
+              {isOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
             </button>
           </nav>
         </div>
       </header>
 
-      {/* Mobile Overlay */}
+      {/* Mobile Backdrop */}
       {isOpen && (
         <div
           style={{
             position: "fixed",
             inset: 0,
-            background: "rgba(8,26,55,0.6)",
+            background: "rgba(8,26,55,0.55)",
             zIndex: 40,
             backdropFilter: "blur(4px)",
           }}
@@ -231,6 +241,10 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       <div
+        id="mobile-menu"
+        role="dialog"
+        aria-label="Navigation menu"
+        aria-modal="true"
         style={{
           position: "fixed",
           top: 0,
@@ -240,15 +254,14 @@ export default function Navbar() {
           background: "var(--navy)",
           zIndex: 50,
           transform: isOpen ? "translateX(0)" : "translateX(100%)",
-          transition: "transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
-          boxShadow: "-16px 0 64px rgba(8,26,55,0.5)",
+          transition: "transform 0.38s cubic-bezier(0.4, 0, 0.2, 1)",
+          boxShadow: "-20px 0 80px rgba(8,26,55,0.5)",
           display: "flex",
           flexDirection: "column",
-          padding: "6rem 1.75rem 2.5rem",
+          padding: "5.5rem 1.75rem 2.5rem",
           overflowY: "auto",
-          borderLeft: "1px solid rgba(255,255,255,0.06)",
+          borderLeft: "1px solid rgba(255,255,255,0.05)",
         }}
-        aria-hidden={!isOpen}
       >
         {/* Close Button */}
         <button
@@ -260,7 +273,7 @@ export default function Navbar() {
             padding: "0.5rem",
             borderRadius: "10px",
             color: "#ffffff",
-            background: "rgba(255,255,255,0.08)",
+            background: "rgba(255,255,255,0.07)",
             border: "1px solid rgba(255,255,255,0.1)",
             display: "flex",
             alignItems: "center",
@@ -270,7 +283,7 @@ export default function Navbar() {
           }}
           aria-label="Close menu"
         >
-          <X size={18} />
+          <X size={18} aria-hidden="true" />
         </button>
 
         {/* Mobile Brand */}
@@ -284,19 +297,19 @@ export default function Navbar() {
             gap: "0.65rem",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "36px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "34px" }}>
             <Image
               src="/images/logo/logo.png"
               alt="HDZ Revamped"
-              width={36}
-              height={36}
+              width={34}
+              height={34}
               style={{ objectFit: "contain", width: "100%", height: "auto" }}
               onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
             />
           </div>
           <span
             style={{
-              fontFamily: "Plus Jakarta Sans, sans-serif",
+              fontFamily: "Outfit, sans-serif",
               fontWeight: 800,
               fontSize: "1rem",
               color: "#fff",
@@ -308,37 +321,36 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Nav Links */}
-        <ul style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                onClick={() => setIsOpen(false)}
+        <nav aria-label="Mobile navigation">
+          <ul style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+            {navLinks.map((link, idx) => (
+              <li
+                key={link.href}
                 style={{
-                  display: "block",
-                  padding: "0.875rem 1.25rem",
-                  borderRadius: "var(--radius-md)",
-                  fontWeight: 700,
-                  fontSize: "1.05rem",
-                  color: "rgba(255,255,255,0.82)",
-                  transition: "all 0.2s ease",
-                  fontFamily: "Plus Jakarta Sans, sans-serif",
-                  letterSpacing: "-0.02em",
+                  opacity: isOpen ? 1 : 0,
+                  transform: isOpen ? "none" : "translateX(20px)",
+                  transition: `opacity 0.3s ease ${idx * 0.05 + 0.1}s, transform 0.3s ease ${idx * 0.05 + 0.1}s`,
                 }}
-                className="mobile-nav-link"
               >
-                {link.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
+                <Link
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className="mobile-nav-link"
+                  aria-current={isActive(link.href) ? "page" : undefined}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
         {/* Mobile CTAs */}
         <div style={{ marginTop: "auto", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
           <div
             style={{
-              background: "rgba(212,168,74,0.08)",
-              border: "1px solid rgba(212,168,74,0.2)",
+              background: "rgba(201,168,76,0.07)",
+              border: "1px solid rgba(201,168,76,0.18)",
               borderRadius: "var(--radius-md)",
               padding: "0.75rem 1rem",
               display: "flex",
@@ -346,8 +358,8 @@ export default function Navbar() {
               gap: "0.5rem",
             }}
           >
-            <Shield size={14} color="var(--gold)" />
-            <span style={{ fontSize: "0.8rem", color: "var(--gold)", fontWeight: 600 }}>
+            <Shield size={13} color="var(--gold)" aria-hidden="true" />
+            <span style={{ fontSize: "0.78rem", color: "var(--gold)", fontWeight: 600, fontFamily: "Outfit, sans-serif" }}>
               CA Licensed Contractor {CONTACT.license}
             </span>
           </div>
@@ -359,7 +371,7 @@ export default function Navbar() {
             style={{ width: "100%", justifyContent: "center" }}
             onClick={() => setIsOpen(false)}
           >
-            <Phone size={17} />
+            <Phone size={16} aria-hidden="true" />
             {CONTACT.phoneDisplay}
           </a>
 
@@ -375,19 +387,8 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Spacer */}
-      <div style={{ height: "72px" }} aria-hidden="true" />
-
-      <style>{`
-        .nav-link-pill:hover {
-          background: rgba(255,255,255,0.12) !important;
-          color: #ffffff !important;
-        }
-        .mobile-nav-link:hover {
-          background: rgba(255,255,255,0.07) !important;
-          color: #ffffff !important;
-        }
-      `}</style>
+      {/* Navbar height spacer */}
+      <div style={{ height: "var(--navbar-h)" }} aria-hidden="true" />
     </>
   );
 }

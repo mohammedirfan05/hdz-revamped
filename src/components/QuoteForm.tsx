@@ -91,6 +91,8 @@ export default function QuoteForm({
   if (status === "success") {
     return (
       <div
+        role="status"
+        aria-live="polite"
         style={{
           display: "flex",
           flexDirection: "column",
@@ -101,7 +103,7 @@ export default function QuoteForm({
           gap: "1rem",
         }}
       >
-        <CheckCircle size={56} color="var(--success, #16a34a)" strokeWidth={1.5} />
+        <CheckCircle size={56} color="var(--success, #16a34a)" strokeWidth={1.5} aria-hidden="true" />
         <h3 style={{ color: "var(--navy)", marginTop: "0.5rem" }}>
           Quote Request Sent!
         </h3>
@@ -156,67 +158,79 @@ export default function QuoteForm({
         {/* Full Name */}
         <div className="form-group">
           <label htmlFor="quote-name" className="form-label">
-            Full Name <span style={{ color: "#ef4444" }}>*</span>
+            Full Name <span style={{ color: "#ef4444" }} aria-hidden="true">*</span>
           </label>
           <input
             id="quote-name"
             type="text"
-            placeholder="John Smith"
+            placeholder="Your full name"
             className={`form-input ${errors.name ? "error" : ""}`}
             autoComplete="name"
+            aria-required="true"
+            aria-describedby={errors.name ? "quote-name-error" : undefined}
+            aria-invalid={errors.name ? "true" : undefined}
             {...register("name")}
           />
           {errors.name && (
-            <span className="form-error">{errors.name.message}</span>
+            <span id="quote-name-error" className="form-error" role="alert">{errors.name.message}</span>
           )}
         </div>
 
         {/* Phone */}
         <div className="form-group">
           <label htmlFor="quote-phone" className="form-label">
-            Phone Number <span style={{ color: "#ef4444" }}>*</span>
+            Phone Number <span style={{ color: "#ef4444" }} aria-hidden="true">*</span>
           </label>
           <input
             id="quote-phone"
             type="tel"
-            placeholder="(760) 555-0100"
+            placeholder="(760) 000-0000"
             className={`form-input ${errors.phone ? "error" : ""}`}
             autoComplete="tel"
+            aria-required="true"
+            aria-describedby={errors.phone ? "quote-phone-error" : undefined}
+            aria-invalid={errors.phone ? "true" : undefined}
             {...register("phone")}
           />
           {errors.phone && (
-            <span className="form-error">{errors.phone.message}</span>
+            <span id="quote-phone-error" className="form-error" role="alert">{errors.phone.message}</span>
           )}
         </div>
 
         {/* Email */}
         <div className="form-group">
           <label htmlFor="quote-email" className="form-label">
-            Email Address <span style={{ color: "#ef4444" }}>*</span>
+            Email Address <span style={{ color: "#ef4444" }} aria-hidden="true">*</span>
           </label>
           <input
             id="quote-email"
             type="email"
-            placeholder="john@example.com"
+            placeholder="you@example.com"
             className={`form-input ${errors.email ? "error" : ""}`}
             autoComplete="email"
+            aria-required="true"
+            aria-describedby={errors.email ? "quote-email-error" : undefined}
+            aria-invalid={errors.email ? "true" : undefined}
             {...register("email")}
           />
           {errors.email && (
-            <span className="form-error">{errors.email.message}</span>
+            <span id="quote-email-error" className="form-error" role="alert">{errors.email.message}</span>
           )}
         </div>
 
         {/* Service */}
         <div className="form-group">
           <label htmlFor="quote-service" className="form-label">
-            Service Needed <span style={{ color: "#ef4444" }}>*</span>
+            Service Needed <span style={{ color: "#ef4444" }} aria-hidden="true">*</span>
           </label>
           <select
             id="quote-service"
             className={`form-input ${errors.service ? "error" : ""}`}
             {...register("service")}
             style={{ cursor: "pointer" }}
+            aria-required="true"
+            aria-describedby={errors.service ? "quote-service-error" : undefined}
+            aria-invalid={errors.service ? "true" : undefined}
           >
             <option value="">Select a service…</option>
             {SERVICES.map((s) => (
@@ -228,7 +242,7 @@ export default function QuoteForm({
             <option value="Other">Other / Not Sure</option>
           </select>
           {errors.service && (
-            <span className="form-error">{errors.service.message}</span>
+            <span id="quote-service-error" className="form-error" role="alert">{errors.service.message}</span>
           )}
         </div>
 
@@ -255,18 +269,21 @@ export default function QuoteForm({
           style={{ gridColumn: compact ? undefined : "1 / -1" }}
         >
           <label htmlFor="quote-message" className="form-label">
-            Project Details <span style={{ color: "#ef4444" }}>*</span>
+            Project Details <span style={{ color: "#ef4444" }} aria-hidden="true">*</span>
           </label>
           <textarea
             id="quote-message"
             rows={compact ? 3 : 5}
-            placeholder="Describe your project: size of area, current condition, desired outcome, timeline, etc."
+            placeholder="Describe your project — area size, current condition, what you'd like changed, and your timeline."
             className={`form-input ${errors.message ? "error" : ""}`}
             style={{ resize: "vertical", minHeight: compact ? "80px" : "120px" }}
+            aria-required="true"
+            aria-describedby={errors.message ? "quote-message-error" : undefined}
+            aria-invalid={errors.message ? "true" : undefined}
             {...register("message")}
           />
           {errors.message && (
-            <span className="form-error">{errors.message.message}</span>
+            <span id="quote-message-error" className="form-error" role="alert">{errors.message.message}</span>
           )}
         </div>
       </div>
@@ -310,15 +327,16 @@ export default function QuoteForm({
           id="quote-form-submit"
           style={{ minWidth: "180px" }}
           aria-live="polite"
+          aria-busy={status === "loading"}
         >
           {status === "loading" ? (
             <>
-              <Loader2 size={18} className="spin-icon" />
-              Sending…
+              <Loader2 size={18} className="spin-icon" aria-hidden="true" />
+              <span>Sending…</span>
             </>
           ) : (
             <>
-              <Send size={18} />
+              <Send size={18} aria-hidden="true" />
               Request Free Quote
             </>
           )}

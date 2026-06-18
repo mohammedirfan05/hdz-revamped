@@ -108,7 +108,7 @@ export default function ProjectsPageClient() {
           >
             Portfolio
           </span>
-          <h1 className="text-white text-5xl md:text-6xl font-extrabold tracking-tight mb-6 font-['Plus_Jakarta_Sans']">
+          <h1 className="text-white text-5xl md:text-6xl font-extrabold tracking-tight mb-6" style={{ fontFamily: "Outfit, sans-serif", letterSpacing: "-0.045em" }}>
             Our Masterpieces
           </h1>
           <p className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
@@ -282,7 +282,7 @@ export default function ProjectsPageClient() {
             </div>
 
             <div className="text-center text-white px-4">
-              <h3 className="text-xl md:text-2xl font-bold font-['Plus_Jakarta_Sans'] mb-1">{lightboxItem.title}</h3>
+              <h3 className="text-xl md:text-2xl font-bold mb-1" style={{ fontFamily: "Outfit, sans-serif", letterSpacing: "-0.03em", color: "#fff" }}>{lightboxItem.title}</h3>
               <p className="text-white/60 tracking-wider text-sm uppercase">{lightboxItem.category}</p>
             </div>
           </div>
@@ -494,7 +494,7 @@ export default function ProjectsPageClient() {
 
         /* ── Card title ─────────────────────── */
         .projects-card__title {
-          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-family: 'Outfit', sans-serif;
           font-size: 1rem;
           font-weight: 700;
           color: #0d1b2e;
@@ -545,7 +545,7 @@ export default function ProjectsPageClient() {
         }
 
         .projects-cta-heading {
-          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-family: 'Outfit', sans-serif;
           font-size: clamp(1.75rem, 4vw, 3rem);
           font-weight: 800;
           color: #ffffff;
@@ -578,7 +578,7 @@ export default function ProjectsPageClient() {
           color: #081A37;
           font-weight: 800;
           font-size: 1rem;
-          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-family: 'Outfit', sans-serif;
           transition: all 0.25s ease;
           box-shadow: 0 8px 24px rgba(212,168,74,0.35);
           text-decoration: none;

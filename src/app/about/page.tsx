@@ -57,38 +57,63 @@ export default function AboutPage() {
   return (
     <>
       {/* ── PAGE HERO ─────────────────────────────────────────── */}
-      <section className="page-hero">
+      <section className="page-hero" style={{ textAlign: "center" }}>
         <div className="container">
-          <span className="section-label" style={{ color: "var(--blue)", background: "rgba(43,93,232,0.2)", border: "1px solid rgba(43,93,232,0.4)" }}>
-            About Us
-          </span>
-          <h1 style={{ color: "#fff", marginTop: "0.75rem", marginBottom: "1rem" }}>About HDZ Revamped</h1>
-          <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "1.125rem", maxWidth: "560px", margin: "0 auto" }}>
-            Licensed &amp; trusted painting and drywall professionals serving San Diego County with quality craftsmanship and honest service.
+          {/* Corrected: using var(--royal) and var(--royal-light), not var(--blue) */}
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              background: "var(--royal-light)",
+              border: "1px solid rgba(41,93,255,0.22)",
+              borderRadius: "var(--radius-full)",
+              padding: "0.35rem 1rem",
+              marginBottom: "1.25rem",
+            }}
+          >
+            <span
+              style={{
+                fontSize: "0.7rem",
+                fontWeight: 700,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: "var(--royal)",
+                fontFamily: "Outfit, sans-serif",
+              }}
+            >
+              About Us
+            </span>
+          </div>
+          <h1 style={{ color: "#fff", marginBottom: "1rem" }}>About HDZ Revamped</h1>
+          <p style={{ color: "rgba(255,255,255,0.72)", fontSize: "1.125rem", maxWidth: "560px", margin: "0 auto" }}>
+            Licensed &amp; trusted painting and drywall professionals serving San Diego County
+            with quality craftsmanship and honest service.
           </p>
         </div>
       </section>
 
       {/* ── COMPANY STORY ─────────────────────────────────────── */}
-      <section className="section-padding">
+      <section className="section-padding" style={{ background: "#ffffff" }}>
         <div className="container">
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
               gap: "4rem",
               alignItems: "center",
             }}
           >
             {/* Image */}
-            <div style={{ position: "relative" }}>
+            <div style={{ position: "relative" }} className="reveal-left">
               <div
                 style={{
                   position: "relative",
-                  borderRadius: "var(--radius-lg)",
+                  borderRadius: "var(--radius-xl)",
                   overflow: "hidden",
                   aspectRatio: "4/3",
                   background: "var(--gray-bg)",
+                  boxShadow: "var(--shadow-xl)",
                 }}
               >
                 <Image
@@ -99,50 +124,54 @@ export default function AboutPage() {
                   style={{ objectFit: "cover" }}
                 />
               </div>
-              {/* Credential card */}
+              {/* Credential card — using var(--royal), not var(--blue) */}
               <div
                 style={{
                   position: "absolute",
                   bottom: "-1.5rem",
                   right: "-1rem",
-                  background: "var(--blue)",
+                  background: "var(--royal)",
                   color: "#fff",
-                  borderRadius: "12px",
+                  borderRadius: "var(--radius-lg)",
                   padding: "1.25rem 1.5rem",
-                  boxShadow: "var(--shadow-lg)",
+                  boxShadow: "var(--shadow-royal)",
                   minWidth: "200px",
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.25rem" }}>
-                  <Shield size={18} />
+                  <Shield size={17} aria-hidden="true" />
                   <span style={{ fontWeight: 700, fontSize: "0.875rem" }}>Licensed Contractor</span>
                 </div>
-                <div style={{ fontSize: "1.5rem", fontWeight: 800, fontFamily: "Poppins, sans-serif" }}>
+                <div style={{ fontSize: "1.5rem", fontWeight: 800, fontFamily: "Outfit, sans-serif", letterSpacing: "-0.04em" }}>
                   {CONTACT.license}
                 </div>
-                <div style={{ fontSize: "0.75rem", opacity: 0.85, marginTop: "0.1rem" }}>
+                <div style={{ fontSize: "0.75rem", opacity: 0.82, marginTop: "0.1rem" }}>
                   State of California
                 </div>
               </div>
             </div>
 
             {/* Story */}
-            <div style={{ paddingBottom: "2rem" }}>
-              <span className="section-label">Our Story</span>
-              <h2 className="section-title">Built on Quality, Driven by Pride</h2>
-              <div className="divider" />
-              <p style={{ color: "var(--gray-text)", lineHeight: 1.8, marginBottom: "1.25rem" }}>
+            <div style={{ paddingBottom: "2rem" }} className="reveal-right">
+              <div className="eyebrow">Our Story</div>
+              <h2 style={{ color: "var(--navy)", marginBottom: "0.75rem" }}>
+                Built on Quality,
+                <br />
+                <span style={{ color: "var(--royal)" }}>Driven by Pride</span>
+              </h2>
+              <div className="accent-line" />
+              <p style={{ color: "var(--gray-text)", lineHeight: 1.82, marginBottom: "1.25rem" }}>
                 HDZ Revamped was founded with a simple mission: deliver professional-grade painting
                 and drywall services that San Diego County homeowners and businesses can rely on.
                 Every project we take on reflects our commitment to quality, cleanliness, and
                 customer satisfaction.
               </p>
-              <p style={{ color: "var(--gray-text)", lineHeight: 1.8, marginBottom: "1.25rem" }}>
+              <p style={{ color: "var(--gray-text)", lineHeight: 1.82, marginBottom: "1.25rem" }}>
                 As a licensed California contractor (#1146147), we hold ourselves to the highest
                 standards. Whether you need a single room refreshed or a complete exterior painted,
                 we approach every job with the same level of professionalism and craftsmanship.
               </p>
-              <p style={{ color: "var(--gray-text)", lineHeight: 1.8, marginBottom: "2rem" }}>
+              <p style={{ color: "var(--gray-text)", lineHeight: 1.82, marginBottom: "2.25rem" }}>
                 We&apos;re proud to serve our local community throughout San Diego County — from
                 coastal communities like Carlsbad and Del Mar, to inland areas like Escondido,
                 El Cajon, and Ramona.
@@ -150,10 +179,10 @@ export default function AboutPage() {
 
               <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
                 <Link href="/contact" className="btn btn-primary" id="about-quote-btn">
-                  Get a Free Quote <ArrowRight size={18} />
+                  Get a Free Quote <ArrowRight size={17} aria-hidden="true" />
                 </Link>
                 <Link href="/services" className="btn btn-secondary" id="about-services-btn">
-                  Our Services <ArrowRight size={18} />
+                  Our Services <ArrowRight size={17} aria-hidden="true" />
                 </Link>
               </div>
             </div>
@@ -164,42 +193,57 @@ export default function AboutPage() {
       {/* ── VALUES ────────────────────────────────────────────── */}
       <section className="section-padding" style={{ background: "var(--gray-bg)" }}>
         <div className="container">
-          <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-            <span className="section-label">Our Values</span>
-            <h2 className="section-title">What We Stand For</h2>
-            <div className="divider" style={{ margin: "0 auto 1rem" }} />
-            <p className="section-subtitle" style={{ margin: "0 auto" }}>
-              These principles guide every project we take on and every interaction we have with our clients.
-            </p>
+          <div style={{ marginBottom: "3.5rem" }} className="reveal-up">
+            <div className="eyebrow">Our Values</div>
+            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: "1.5rem" }}>
+              <h2 style={{ color: "var(--navy)", marginBottom: 0 }}>
+                What We{" "}
+                <span style={{ color: "var(--royal)" }}>Stand For</span>
+              </h2>
+              <p className="section-subtitle">
+                These principles guide every project we take on and every interaction with our clients.
+              </p>
+            </div>
           </div>
 
+          {/* 2-column grid (not 3-col auto-fit) */}
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-              gap: "1.5rem",
+              gridTemplateColumns: "repeat(2, 1fr)",
+              gap: "1.25rem",
             }}
           >
-            {values.map((val) => {
+            {values.map((val, i) => {
               const Icon = val.icon;
               return (
-                <div key={val.title} className="card" style={{ padding: "1.75rem" }}>
+                <div
+                  key={val.title}
+                  className={`card service-panel reveal-up stagger-${Math.min(i + 1, 6)}`}
+                  style={{ padding: "2rem 2.25rem", border: "1px solid var(--gray-border)" }}
+                >
                   <div
                     style={{
                       width: "48px",
                       height: "48px",
-                      background: "var(--blue-light)",
-                      borderRadius: "12px",
+                      /* Corrected: var(--royal-light) not var(--blue-light) */
+                      background: "var(--royal-light)",
+                      borderRadius: "var(--radius-md)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       marginBottom: "1.25rem",
                     }}
                   >
-                    <Icon size={22} color="var(--blue)" />
+                    {/* Corrected: var(--royal) not var(--blue) */}
+                    <Icon size={21} color="var(--royal)" aria-hidden="true" />
                   </div>
-                  <h3 style={{ fontSize: "1.05rem", marginBottom: "0.5rem" }}>{val.title}</h3>
-                  <p style={{ color: "var(--gray-text)", fontSize: "0.9rem", lineHeight: 1.7 }}>{val.desc}</p>
+                  <h3 style={{ fontSize: "1.05rem", marginBottom: "0.5rem", color: "var(--navy)" }}>
+                    {val.title}
+                  </h3>
+                  <p style={{ color: "var(--gray-text)", fontSize: "0.9rem", lineHeight: 1.72 }}>
+                    {val.desc}
+                  </p>
                 </div>
               );
             })}
@@ -208,28 +252,30 @@ export default function AboutPage() {
       </section>
 
       {/* ── LICENSE & CREDENTIALS ─────────────────────────────── */}
-      <section className="section-padding">
+      <section className="section-padding" style={{ background: "#ffffff" }}>
         <div className="container">
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-              gap: "2rem",
+              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+              gap: "3.5rem",
               alignItems: "start",
             }}
           >
-            <div>
-              <span className="section-label">Credentials</span>
-              <h2 className="section-title">Licensed &amp; Insured</h2>
-              <div className="divider" />
-              <p style={{ color: "var(--gray-text)", lineHeight: 1.8, marginBottom: "1.5rem" }}>
+            <div className="reveal-left">
+              <div className="eyebrow">Credentials</div>
+              <h2 style={{ color: "var(--navy)", marginBottom: "0.75rem" }}>
+                Licensed &amp; <span style={{ color: "var(--royal)" }}>Insured</span>
+              </h2>
+              <div className="accent-line" />
+              <p style={{ color: "var(--gray-text)", lineHeight: 1.82, marginBottom: "1.75rem" }}>
                 When you hire HDZ Revamped, you&apos;re hiring a properly licensed California
                 contractor. Our license ensures our work meets California&apos;s quality and
                 safety standards — giving you peace of mind.
               </p>
 
-              {/* Credential boxes */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              {/* Credential boxes — corrected tokens */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.875rem" }}>
                 {[
                   { label: "CA Contractor License", value: "#1146147", icon: Shield },
                   { label: "Service Area", value: "San Diego County, CA", icon: MapPin },
@@ -237,31 +283,21 @@ export default function AboutPage() {
                 ].map((cred) => {
                   const Icon = cred.icon;
                   return (
-                    <div
-                      key={cred.label}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "1rem",
-                        padding: "1rem 1.25rem",
-                        background: "var(--blue-light)",
-                        borderRadius: "10px",
-                        border: "1px solid rgba(43,93,232,0.15)",
-                      }}
-                    >
+                    <div key={cred.label} className="cred-block">
                       <div
                         style={{
                           width: "40px",
                           height: "40px",
-                          background: "var(--blue)",
-                          borderRadius: "8px",
+                          /* Corrected: var(--royal) not var(--blue) */
+                          background: "var(--royal)",
+                          borderRadius: "9px",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
                           flexShrink: 0,
                         }}
                       >
-                        <Icon size={18} color="#fff" />
+                        <Icon size={17} color="#fff" aria-hidden="true" />
                       </div>
                       <div>
                         <div style={{ fontSize: "0.75rem", color: "var(--gray-text)", fontWeight: 500 }}>
@@ -278,33 +314,20 @@ export default function AboutPage() {
             </div>
 
             {/* Service Area */}
-            <div>
-              <span className="section-label">Coverage</span>
-              <h2 className="section-title">We Serve All of San Diego County</h2>
-              <div className="divider" />
-              <p style={{ color: "var(--gray-text)", lineHeight: 1.8, marginBottom: "1.5rem" }}>
-                From coastal communities to inland neighborhoods, we proudly serve homeowners and businesses across San Diego County.
+            <div className="reveal-right">
+              <div className="eyebrow">Coverage</div>
+              <h2 style={{ color: "var(--navy)", marginBottom: "0.75rem" }}>
+                We Serve All of{" "}
+                <span style={{ color: "var(--royal)" }}>San Diego County</span>
+              </h2>
+              <div className="accent-line" />
+              <p style={{ color: "var(--gray-text)", lineHeight: 1.82, marginBottom: "1.75rem" }}>
+                From coastal communities to inland neighborhoods, we proudly serve homeowners
+                and businesses across San Diego County.
               </p>
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: "0.5rem",
-                }}
-              >
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
                 {SERVICE_AREAS.map((city) => (
-                  <span
-                    key={city}
-                    style={{
-                      background: "var(--gray-bg)",
-                      border: "1px solid var(--gray-border)",
-                      borderRadius: "100px",
-                      padding: "0.3rem 0.85rem",
-                      fontSize: "0.8rem",
-                      color: "var(--navy)",
-                      fontWeight: 500,
-                    }}
-                  >
+                  <span key={city} className="area-tag">
                     {city}
                   </span>
                 ))}
@@ -317,24 +340,31 @@ export default function AboutPage() {
       {/* ── CTA ───────────────────────────────────────────────── */}
       <section
         style={{
-          background: "linear-gradient(135deg, var(--navy) 0%, #16213e 100%)",
-          padding: "5rem 0",
+          background: "var(--gradient-cta)",
+          padding: "6rem 0",
           textAlign: "center",
+          position: "relative",
+          overflow: "hidden",
         }}
       >
-        <div className="container">
+        <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 100%, rgba(201,168,76,0.12) 0%, transparent 60%)", pointerEvents: "none" }} />
+        <div className="container" style={{ position: "relative", zIndex: 1 }}>
+          <div className="eyebrow eyebrow-light" style={{ justifyContent: "center" }}>
+            Get Started Today
+          </div>
           <h2 style={{ color: "#fff", marginBottom: "1rem" }}>
             Ready to Start Your Project?
           </h2>
-          <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "1.05rem", marginBottom: "2.5rem", maxWidth: "480px", margin: "0 auto 2.5rem" }}>
-            Contact us today for a free, no-obligation quote. We&apos;ll assess your project and provide a detailed estimate.
+          <p style={{ color: "rgba(255,255,255,0.65)", fontSize: "1.05rem", marginBottom: "2.75rem", maxWidth: "480px", margin: "0 auto 2.75rem", lineHeight: 1.78 }}>
+            Contact us today for a free, no-obligation quote. We&apos;ll assess your project
+            and provide a detailed estimate.
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "1rem" }}>
-            <Link href="/contact" className="btn btn-primary" id="about-cta-quote-btn" style={{ fontSize: "1.05rem" }}>
-              Get Free Quote <ArrowRight size={18} />
+            <Link href="/contact" className="btn btn-gold" id="about-cta-quote-btn" style={{ fontSize: "1.05rem" }}>
+              Get Free Quote <ArrowRight size={17} aria-hidden="true" />
             </Link>
-            <a href={`tel:${CONTACT.phone}`} className="btn btn-outline-white" id="about-cta-call-btn" style={{ fontSize: "1.05rem" }}>
-              <Phone size={18} />
+            <a href={`tel:${CONTACT.phone}`} className="btn btn-ghost-white" id="about-cta-call-btn" style={{ fontSize: "1.05rem" }}>
+              <Phone size={17} aria-hidden="true" />
               {CONTACT.phoneDisplay}
             </a>
           </div>

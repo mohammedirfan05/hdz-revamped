@@ -53,22 +53,37 @@ export default function ContactPage() {
   return (
     <>
       {/* ── PAGE HERO ─────────────────────────────────────────── */}
-      <section className="page-hero">
+      <section className="page-hero" style={{ textAlign: "center" }}>
         <div className="container">
-          <span
-            className="section-label"
+          <div
             style={{
-              color: "var(--blue)",
-              background: "rgba(43,93,232,0.2)",
-              border: "1px solid rgba(43,93,232,0.4)",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              background: "var(--royal-light)",
+              border: "1px solid rgba(41,93,255,0.22)",
+              borderRadius: "var(--radius-full)",
+              padding: "0.35rem 1rem",
+              marginBottom: "1.25rem",
             }}
           >
-            Contact
-          </span>
-          <h1 style={{ color: "#fff", marginTop: "0.75rem", marginBottom: "1rem" }}>
+            <span
+              style={{
+                fontSize: "0.7rem",
+                fontWeight: 700,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: "var(--royal)",
+                fontFamily: "Outfit, sans-serif",
+              }}
+            >
+              Contact
+            </span>
+          </div>
+          <h1 style={{ color: "#fff", marginBottom: "1rem" }}>
             Contact HDZ Revamped
           </h1>
-          <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "1.125rem", maxWidth: "560px", margin: "0 auto" }}>
+          <p style={{ color: "rgba(255,255,255,0.72)", fontSize: "1.125rem", maxWidth: "560px", margin: "0 auto" }}>
             Get your free quote today. Call us, send an email, or fill out the form below — we&apos;ll
             respond within 24 hours.
           </p>
@@ -108,14 +123,14 @@ export default function ContactPage() {
                     style={{
                       width: "52px",
                       height: "52px",
-                      background: "var(--blue-light)",
+                      background: "var(--royal-light)",
                       borderRadius: "12px",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                     }}
                   >
-                    <Icon size={24} color="var(--blue)" />
+                    <Icon size={24} color="var(--royal)" aria-hidden="true" />
                   </div>
                   <div>
                     <div style={{ fontSize: "0.75rem", fontWeight: 600, color: "var(--gray-text)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.25rem" }}>
@@ -126,20 +141,20 @@ export default function ContactPage() {
                     </div>
                     <div style={{ fontSize: "0.8rem", color: "var(--gray-text)" }}>{card.desc}</div>
                   </div>
-                  <span style={{ color: "var(--blue)", fontSize: "0.875rem", fontWeight: 600, marginTop: "auto" }}>
-                    {card.action} →
+                  <span style={{ color: "var(--royal)", fontSize: "0.875rem", fontWeight: 600, marginTop: "auto", display: "flex", alignItems: "center", gap: "0.35rem" }}>
+                    {card.action} <ArrowRight size={13} aria-hidden="true" />
                   </span>
                 </a>
               );
             })}
 
             {/* Hours Card */}
-            <div className="card" style={{ padding: "1.75rem" }}>
+            <div className="card" style={{ padding: "1.75rem", border: "1px solid var(--gray-border)" }}>
               <div
                 style={{
                   width: "52px",
                   height: "52px",
-                  background: "var(--blue-light)",
+                  background: "var(--royal-light)",
                   borderRadius: "12px",
                   display: "flex",
                   alignItems: "center",
@@ -147,7 +162,7 @@ export default function ContactPage() {
                   marginBottom: "1rem",
                 }}
               >
-                <Clock size={24} color="var(--blue)" />
+                <Clock size={24} color="var(--royal)" aria-hidden="true" />
               </div>
               <div>
                 <div style={{ fontSize: "0.75rem", fontWeight: 600, color: "var(--gray-text)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.25rem" }}>
@@ -166,13 +181,13 @@ export default function ContactPage() {
                   display: "flex",
                   alignItems: "center",
                   gap: "0.4rem",
-                  background: "var(--blue-light)",
+                  background: "var(--royal-light)",
                   borderRadius: "8px",
                   padding: "0.5rem 0.75rem",
                 }}
               >
-                <Shield size={14} color="var(--blue)" />
-                <span style={{ fontSize: "0.8rem", color: "var(--blue)", fontWeight: 600 }}>
+                <Shield size={14} color="var(--royal)" aria-hidden="true" />
+                <span style={{ fontSize: "0.8rem", color: "var(--royal)", fontWeight: 600 }}>
                   License {CONTACT.license}
                 </span>
               </div>
@@ -278,7 +293,7 @@ export default function ContactPage() {
                   fontWeight: 500,
                 }}
               >
-                <MapPin size={12} color="var(--blue)" />
+                <MapPin size={12} color="var(--royal)" aria-hidden="true" />
                 {city}
               </span>
             ))}
@@ -322,7 +337,7 @@ export default function ContactPage() {
                   }}
                 >
                   {faq.q}
-                  <span style={{ color: "var(--blue)", fontSize: "1.25rem", fontWeight: 300, flexShrink: 0, marginLeft: "1rem" }}>+</span>
+                  <span style={{ color: "var(--royal)", fontSize: "1.25rem", fontWeight: 300, flexShrink: 0, marginLeft: "1rem" }}>+</span>
                 </summary>
                 <div style={{ padding: "1.25rem 1.5rem", color: "var(--gray-text)", fontSize: "0.925rem", lineHeight: 1.75 }}>
                   {faq.a}
@@ -336,23 +351,27 @@ export default function ContactPage() {
       {/* ── FINAL CTA ─────────────────────────────────────────── */}
       <section
         style={{
-          background: "linear-gradient(135deg, var(--navy) 0%, #16213e 100%)",
-          padding: "4rem 0",
+          background: "var(--gradient-cta)",
+          padding: "5rem 0",
           textAlign: "center",
+          position: "relative",
+          overflow: "hidden",
         }}
       >
-        <div className="container">
-          <h2 style={{ color: "#fff", marginBottom: "1rem" }}>Prefer to Call?</h2>
-          <p style={{ color: "rgba(255,255,255,0.75)", marginBottom: "2rem", fontSize: "1.05rem" }}>
-            We&apos;re available Mon–Sat, 7AM–6PM.
+        <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 100%, rgba(201,168,76,0.1) 0%, transparent 60%)", pointerEvents: "none" }} />
+        <div className="container" style={{ position: "relative", zIndex: 1 }}>
+          <div className="eyebrow eyebrow-light" style={{ justifyContent: "center" }}>Prefer to Call?</div>
+          <h2 style={{ color: "#fff", marginBottom: "1rem" }}>Speak with Us Directly</h2>
+          <p style={{ color: "rgba(255,255,255,0.65)", marginBottom: "2.5rem", fontSize: "1.05rem", lineHeight: 1.75 }}>
+            We&apos;re available Mon–Sat, 7AM–6PM. No wait times, no call centers.
           </p>
           <a
             href={`tel:${CONTACT.phone}`}
-            className="btn btn-primary"
+            className="btn btn-gold"
             id="contact-page-final-call-btn"
             style={{ fontSize: "1.15rem", padding: "1rem 2.5rem" }}
           >
-            <Phone size={20} />
+            <Phone size={19} aria-hidden="true" />
             {CONTACT.phoneDisplay}
           </a>
         </div>
