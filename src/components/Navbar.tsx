@@ -60,13 +60,13 @@ export default function Navbar() {
               onClick={() => setIsOpen(false)}
               aria-label="HDZ Revamped - Home"
             >
-              <div style={{ position: "relative", width: "44px", height: "44px" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "44px" }}>
                 <Image
                   src="/images/logo/logo.png"
                   alt="HDZ Revamped Logo"
-                  fill
-                  sizes="44px"
-                  style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }}
+                  width={44}
+                  height={44}
+                  style={{ objectFit: "contain", width: "100%", height: "auto" }}
                   priority
                   onError={(e) => {
                     (e.target as HTMLImageElement).style.display = "none";
@@ -284,13 +284,13 @@ export default function Navbar() {
             gap: "0.65rem",
           }}
         >
-          <div style={{ position: "relative", width: "36px", height: "36px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "36px" }}>
             <Image
               src="/images/logo/logo.png"
               alt="HDZ Revamped"
-              fill
-              sizes="36px"
-              style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }}
+              width={36}
+              height={36}
+              style={{ objectFit: "contain", width: "100%", height: "auto" }}
               onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
             />
           </div>

@@ -537,72 +537,63 @@ export default function HomePage() {
         }}
       >
         <div className="container">
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "center",
-              gap: "0",
-              alignItems: "stretch",
-            }}
-          >
+          <div className="trust-bar-grid">
             {[
               { icon: <Shield size={17} />, label: "CA License #1146147", sub: "Verified Contractor" },
               { icon: <CheckCircle2 size={17} />, label: "Licensed & Insured", sub: "Full Coverage" },
               { icon: <MapPin size={17} />, label: "San Diego County", sub: "All Areas Served" },
               { icon: <Star size={17} />, label: "Free Estimates", sub: "No Obligation" },
               { icon: <Clock size={17} />, label: "Mon–Sat 7AM–6PM", sub: "Available" },
-            ].map((item, i) => (
+            ].map((item) => (
               <div
                 key={item.label}
+                className="trust-bar-item"
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: "0.75rem",
                   padding: "1.25rem 2rem",
-                  borderRight: i < 4 ? "1px solid var(--gray-border)" : "none",
-                  flex: "1 1 auto",
-                  minWidth: "160px",
                   justifyContent: "center",
                 }}
               >
-                <div
-                  style={{
-                    width: "38px",
-                    height: "38px",
-                    background: "var(--royal-light)",
-                    borderRadius: "10px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "var(--royal)",
-                    flexShrink: 0,
-                  }}
-                >
-                  {item.icon}
-                </div>
-                <div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", width: "100%", maxWidth: "230px" }}>
                   <div
                     style={{
-                      fontSize: "0.875rem",
-                      fontWeight: 700,
-                      color: "var(--navy)",
-                      fontFamily: "Plus Jakarta Sans, sans-serif",
-                      letterSpacing: "-0.01em",
+                      width: "38px",
+                      height: "38px",
+                      background: "var(--royal-light)",
+                      borderRadius: "10px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "var(--royal)",
+                      flexShrink: 0,
                     }}
                   >
-                    {item.label}
+                    {item.icon}
                   </div>
-                  <div
-                    style={{
-                      fontSize: "0.72rem",
-                      color: "var(--gray-text)",
-                      fontWeight: 500,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.06em",
-                    }}
-                  >
-                    {item.sub}
+                  <div style={{ textAlign: "left" }}>
+                    <div
+                      style={{
+                        fontSize: "0.875rem",
+                        fontWeight: 700,
+                        color: "var(--navy)",
+                        fontFamily: "Plus Jakarta Sans, sans-serif",
+                        letterSpacing: "-0.01em",
+                      }}
+                    >
+                      {item.label}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "0.72rem",
+                        color: "var(--gray-text)",
+                        fontWeight: 500,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.06em",
+                      }}
+                    >
+                      {item.sub}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1494,14 +1485,7 @@ export default function HomePage() {
           </div>
 
           {/* Testimonial cards */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gap: "1.5rem",
-              marginBottom: "3rem",
-            }}
-          >
+          <div className="testimonials-grid">
             {[
               {
                 initials: "MR",
@@ -1528,7 +1512,7 @@ export default function HomePage() {
                 color: "#4a7c59",
               },
             ].map((t, i) => (
-              <div key={i} className="testimonial-card">
+              <div key={i} className="testimonial-card" style={{ display: "flex", flexDirection: "column", height: "100%" }}>
                 {/* Stars */}
                 <div
                   style={{
@@ -1563,7 +1547,8 @@ export default function HomePage() {
                 {/* Project badge */}
                 <div
                   style={{
-                    display: "inline-block",
+                    display: "inline-flex",
+                    alignSelf: "flex-start",
                     background: "var(--surface)",
                     border: "1px solid var(--gray-border)",
                     borderRadius: "var(--radius-full)",
@@ -1580,7 +1565,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Author */}
-                <div style={{ display: "flex", alignItems: "center", gap: "0.875rem" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.875rem", marginTop: "auto" }}>
                   <div
                     style={{
                       width: "46px",
