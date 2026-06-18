@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Disallow legal pages from indexing
+Disallow: /privacy
+Disallow: /terms
+
+# Sitemap
+Sitemap: https://hdzrevamped.com/sitemap.xml
