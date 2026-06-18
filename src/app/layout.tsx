@@ -5,11 +5,11 @@ import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: {
-    default: "HDZ Revamped | Professional Painting & Drywall San Diego",
+    default: "HDZ Revamped | Premium Painting & Drywall San Diego",
     template: "%s | HDZ Revamped",
   },
   description:
-    "Licensed painting & drywall contractor serving San Diego County. Interior/exterior painting, drywall installation & repair. Free quotes — Call (760) 580-9790.",
+    "San Diego's trusted experts in premium painting, drywall & home renovation. Licensed contractor — CA #1146147. Free quotes — Call (760) 580-9790.",
   keywords: [
     "painting contractor san diego",
     "drywall repair san diego",

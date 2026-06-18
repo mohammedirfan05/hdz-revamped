@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Phone, Mail, Shield, MapPin, Clock } from "lucide-react";
+import { Phone, Mail, Shield, MapPin, Clock, ArrowRight } from "lucide-react";
+import { CONTACT, SERVICES, SERVICE_AREAS } from "@/data/siteData";
 
 const InstagramIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -9,45 +10,120 @@ const InstagramIcon = () => (
     <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
   </svg>
 );
-import { CONTACT, SERVICES, SERVICE_AREAS } from "@/data/siteData";
 
 export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer style={{ background: "var(--navy)", color: "rgba(255,255,255,0.85)" }}>
-      {/* Main Footer */}
-      <div className="container" style={{ padding: "4rem 1.25rem 2rem" }}>
+    <footer
+      style={{
+        background: "var(--navy)",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {/* Background accent */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: "1px",
+          background: "linear-gradient(to right, transparent, rgba(212,168,74,0.4), transparent)",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: "radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px)",
+          backgroundSize: "28px 28px",
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          right: 0,
+          width: "400px",
+          height: "400px",
+          background: "radial-gradient(circle, rgba(41,93,255,0.07) 0%, transparent 70%)",
+          borderRadius: "50%",
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* ── Main Footer Grid ─────────────────────── */}
+      <div
+        className="container"
+        style={{ padding: "5rem 1.5rem 3rem", position: "relative", zIndex: 1 }}
+      >
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "3rem",
+            gridTemplateColumns: "1.4fr 1fr 0.8fr 1.2fr",
+            gap: "3.5rem",
           }}
         >
-          {/* Brand Column */}
+          {/* ── Brand Column ─────────────────── */}
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
-              <div style={{ position: "relative", width: "48px", height: "48px", flexShrink: 0 }}>
+            {/* Logo & Name */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.85rem",
+                marginBottom: "1.5rem",
+              }}
+            >
+              <div style={{ position: "relative", width: "44px", height: "44px", flexShrink: 0 }}>
                 <Image
                   src="/images/logo/logo.png"
                   alt="HDZ Revamped Logo"
                   fill
-                  sizes="48px"
+                  sizes="44px"
                   style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }}
                 />
               </div>
               <div>
-                <div style={{ fontFamily: "Poppins, sans-serif", fontWeight: 700, fontSize: "1.1rem", color: "#fff" }}>
+                <div
+                  style={{
+                    fontFamily: "Plus Jakarta Sans, sans-serif",
+                    fontWeight: 800,
+                    fontSize: "1.1rem",
+                    color: "#fff",
+                    letterSpacing: "-0.03em",
+                  }}
+                >
                   HDZ Revamped
                 </div>
-                <div style={{ fontSize: "0.7rem", color: "var(--blue)", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                <div
+                  style={{
+                    fontSize: "0.65rem",
+                    color: "var(--gold)",
+                    fontWeight: 700,
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                  }}
+                >
                   Painting & Drywall
                 </div>
               </div>
             </div>
-            <p style={{ fontSize: "0.9rem", lineHeight: 1.7, marginBottom: "1.25rem", color: "rgba(255,255,255,0.65)" }}>
-              Professional painting and drywall services for San Diego County homeowners and businesses. Licensed, insured, and committed to quality.
+
+            <p
+              style={{
+                fontSize: "0.9rem",
+                lineHeight: 1.75,
+                marginBottom: "1.75rem",
+                color: "rgba(255,255,255,0.5)",
+                maxWidth: "280px",
+              }}
+            >
+              Premium painting and drywall services for San Diego County homeowners
+              and businesses. Licensed, insured, and committed to craftsmanship.
             </p>
 
             {/* License Badge */}
@@ -56,57 +132,99 @@ export default function Footer() {
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "0.5rem",
-                background: "rgba(43,93,232,0.2)",
-                border: "1px solid rgba(43,93,232,0.4)",
-                borderRadius: "8px",
-                padding: "0.5rem 0.875rem",
-                marginBottom: "1.25rem",
+                background: "rgba(212,168,74,0.08)",
+                border: "1px solid rgba(212,168,74,0.22)",
+                borderRadius: "var(--radius-md)",
+                padding: "0.65rem 1rem",
+                marginBottom: "1.75rem",
               }}
             >
-              <Shield size={15} color="var(--blue)" strokeWidth={2.5} />
-              <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.9)", fontWeight: 600 }}>
+              <Shield size={14} color="var(--gold)" strokeWidth={2.5} />
+              <span
+                style={{
+                  fontSize: "0.8rem",
+                  color: "rgba(255,255,255,0.85)",
+                  fontWeight: 600,
+                  fontFamily: "Plus Jakarta Sans, sans-serif",
+                }}
+              >
                 Licensed Contractor {CONTACT.license}
               </span>
             </div>
 
             {/* Social */}
-            <a
-              href={CONTACT.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              id="footer-instagram-link"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                color: "rgba(255,255,255,0.75)",
-                fontSize: "0.875rem",
-                transition: "color 0.15s",
-              }}
-              className="hover:text-white"
-            >
-              <InstagramIcon />
-              {CONTACT.instagramHandle}
-            </a>
+            <div>
+              <div
+                style={{
+                  fontSize: "0.7rem",
+                  color: "rgba(255,255,255,0.3)",
+                  fontWeight: 700,
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                  marginBottom: "0.75rem",
+                }}
+              >
+                Follow Our Work
+              </div>
+              <a
+                href={CONTACT.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                id="footer-instagram-link"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  color: "rgba(255,255,255,0.6)",
+                  fontSize: "0.875rem",
+                  fontWeight: 600,
+                  transition: "color 0.2s ease",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  borderRadius: "var(--radius-full)",
+                  padding: "0.5rem 1rem",
+                  background: "rgba(255,255,255,0.04)",
+                }}
+                className="hover:text-white"
+              >
+                <InstagramIcon />
+                {CONTACT.instagramHandle}
+              </a>
+            </div>
           </div>
 
-          {/* Services Column */}
+          {/* ── Services Column ───────────────── */}
           <div>
-            <h3 style={{ color: "#fff", fontSize: "1rem", fontWeight: 700, marginBottom: "1.25rem", fontFamily: "Poppins, sans-serif" }}>
+            <h5
+              style={{
+                color: "#fff",
+                fontFamily: "Plus Jakarta Sans, sans-serif",
+                fontWeight: 700,
+                marginBottom: "1.5rem",
+                fontSize: "0.875rem",
+                letterSpacing: "-0.01em",
+                paddingBottom: "0.75rem",
+                borderBottom: "1px solid rgba(255,255,255,0.07)",
+              }}
+            >
               Our Services
-            </h3>
-            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            </h5>
+            <ul style={{ display: "flex", flexDirection: "column", gap: "0.625rem" }}>
               {SERVICES.map((s) => (
                 <li key={s.id}>
                   <Link
                     href="/services"
                     style={{
-                      color: "rgba(255,255,255,0.65)",
-                      fontSize: "0.9rem",
-                      transition: "color 0.15s",
+                      color: "rgba(255,255,255,0.52)",
+                      fontSize: "0.875rem",
+                      transition: "color 0.2s ease",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.4rem",
+                      fontWeight: 500,
                     }}
-                    className="hover:text-white"
+                    className="hover:text-white footer-link"
                   >
+                    <ArrowRight size={11} style={{ flexShrink: 0, opacity: 0.5 }} />
                     {s.title}
                   </Link>
                 </li>
@@ -114,12 +232,23 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Quick Links */}
+          {/* ── Quick Links ───────────────────── */}
           <div>
-            <h3 style={{ color: "#fff", fontSize: "1rem", fontWeight: 700, marginBottom: "1.25rem", fontFamily: "Poppins, sans-serif" }}>
-              Quick Links
-            </h3>
-            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <h5
+              style={{
+                color: "#fff",
+                fontFamily: "Plus Jakarta Sans, sans-serif",
+                fontWeight: 700,
+                marginBottom: "1.5rem",
+                fontSize: "0.875rem",
+                letterSpacing: "-0.01em",
+                paddingBottom: "0.75rem",
+                borderBottom: "1px solid rgba(255,255,255,0.07)",
+              }}
+            >
+              Company
+            </h5>
+            <ul style={{ display: "flex", flexDirection: "column", gap: "0.625rem" }}>
               {[
                 { href: "/", label: "Home" },
                 { href: "/about", label: "About Us" },
@@ -132,9 +261,18 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.9rem", transition: "color 0.15s" }}
-                    className="hover:text-white"
+                    style={{
+                      color: "rgba(255,255,255,0.52)",
+                      fontSize: "0.875rem",
+                      transition: "color 0.2s ease",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.4rem",
+                      fontWeight: 500,
+                    }}
+                    className="hover:text-white footer-link"
                   >
+                    <ArrowRight size={11} style={{ flexShrink: 0, opacity: 0.5 }} />
                     {link.label}
                   </Link>
                 </li>
@@ -142,46 +280,177 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact Info */}
+          {/* ── Contact Column ────────────────── */}
           <div>
-            <h3 style={{ color: "#fff", fontSize: "1rem", fontWeight: 700, marginBottom: "1.25rem", fontFamily: "Poppins, sans-serif" }}>
+            <h5
+              style={{
+                color: "#fff",
+                fontFamily: "Plus Jakarta Sans, sans-serif",
+                fontWeight: 700,
+                marginBottom: "1.5rem",
+                fontSize: "0.875rem",
+                letterSpacing: "-0.01em",
+                paddingBottom: "0.75rem",
+                borderBottom: "1px solid rgba(255,255,255,0.07)",
+              }}
+            >
               Contact Us
-            </h3>
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            </h5>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.125rem" }}>
               <a
                 href={`tel:${CONTACT.phone}`}
                 id="footer-call-btn"
-                style={{ display: "flex", alignItems: "center", gap: "0.65rem", color: "rgba(255,255,255,0.8)", fontSize: "0.9rem", transition: "color 0.15s" }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.75rem",
+                  color: "rgba(255,255,255,0.75)",
+                  fontSize: "0.9rem",
+                  transition: "color 0.2s ease",
+                  fontWeight: 500,
+                }}
                 className="hover:text-white"
               >
-                <Phone size={16} color="var(--blue)" />
+                <div
+                  style={{
+                    width: "34px",
+                    height: "34px",
+                    background: "rgba(41,93,255,0.15)",
+                    border: "1px solid rgba(41,93,255,0.25)",
+                    borderRadius: "8px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                >
+                  <Phone size={14} color="var(--royal)" />
+                </div>
                 {CONTACT.phoneDisplay}
               </a>
+
               <a
                 href={`mailto:${CONTACT.email}`}
                 id="footer-email-link"
-                style={{ display: "flex", alignItems: "center", gap: "0.65rem", color: "rgba(255,255,255,0.8)", fontSize: "0.9rem", transition: "color 0.15s", wordBreak: "break-all" }}
+                style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: "0.75rem",
+                  color: "rgba(255,255,255,0.75)",
+                  fontSize: "0.9rem",
+                  transition: "color 0.2s ease",
+                  fontWeight: 500,
+                  wordBreak: "break-all",
+                }}
                 className="hover:text-white"
               >
-                <Mail size={16} color="var(--blue)" style={{ flexShrink: 0 }} />
+                <div
+                  style={{
+                    width: "34px",
+                    height: "34px",
+                    background: "rgba(41,93,255,0.15)",
+                    border: "1px solid rgba(41,93,255,0.25)",
+                    borderRadius: "8px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                    marginTop: "1px",
+                  }}
+                >
+                  <Mail size={14} color="var(--royal)" />
+                </div>
                 {CONTACT.email}
               </a>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: "0.65rem", color: "rgba(255,255,255,0.8)", fontSize: "0.9rem" }}>
-                <MapPin size={16} color="var(--blue)" style={{ flexShrink: 0, marginTop: "2px" }} />
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: "0.75rem",
+                  color: "rgba(255,255,255,0.75)",
+                  fontSize: "0.9rem",
+                  fontWeight: 500,
+                }}
+              >
+                <div
+                  style={{
+                    width: "34px",
+                    height: "34px",
+                    background: "rgba(41,93,255,0.15)",
+                    border: "1px solid rgba(41,93,255,0.25)",
+                    borderRadius: "8px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                    marginTop: "1px",
+                  }}
+                >
+                  <MapPin size={14} color="var(--royal)" />
+                </div>
                 {CONTACT.area}
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.65rem", color: "rgba(255,255,255,0.8)", fontSize: "0.9rem" }}>
-                <Clock size={16} color="var(--blue)" style={{ flexShrink: 0 }} />
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.75rem",
+                  color: "rgba(255,255,255,0.75)",
+                  fontSize: "0.9rem",
+                  fontWeight: 500,
+                }}
+              >
+                <div
+                  style={{
+                    width: "34px",
+                    height: "34px",
+                    background: "rgba(41,93,255,0.15)",
+                    border: "1px solid rgba(41,93,255,0.25)",
+                    borderRadius: "8px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                >
+                  <Clock size={14} color="var(--royal)" />
+                </div>
                 {CONTACT.hours}
               </div>
             </div>
 
-            {/* Service Areas snippet */}
-            <div style={{ marginTop: "1.5rem" }}>
-              <div style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.45)", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "0.5rem" }}>
+            {/* Service areas */}
+            <div
+              style={{
+                marginTop: "2rem",
+                padding: "1.25rem",
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.06)",
+                borderRadius: "var(--radius-md)",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: "0.65rem",
+                  color: "rgba(255,255,255,0.35)",
+                  fontWeight: 700,
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                  marginBottom: "0.625rem",
+                }}
+              >
                 Service Areas
               </div>
-              <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.55)", lineHeight: 1.6 }}>
+              <p
+                style={{
+                  fontSize: "0.8rem",
+                  color: "rgba(255,255,255,0.45)",
+                  lineHeight: 1.65,
+                }}
+              >
                 {SERVICE_AREAS.slice(0, 8).join(" · ")} & more
               </p>
             </div>
@@ -189,53 +458,78 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* CTA Strip */}
-      <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", padding: "1.5rem 0" }}>
-        <div className="container" style={{
-          display: "flex",
-          flexWrap: "wrap",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: "1rem",
-        }}>
-          <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.9rem" }}>
-            Ready to transform your space?{" "}
-            <strong style={{ color: "#fff" }}>Call us for a free quote today.</strong>
-          </p>
-          <a
-            href={`tel:${CONTACT.phone}`}
-            className="btn btn-primary"
-            style={{ fontSize: "0.9rem", padding: "0.6rem 1.4rem" }}
-            id="footer-cta-call"
-          >
-            <Phone size={16} />
-            {CONTACT.phoneDisplay}
-          </a>
-        </div>
-      </div>
+      {/* ── Separator ──────────────────────────────── */}
+      <div
+        style={{
+          borderTop: "1px solid rgba(255,255,255,0.06)",
+          position: "relative",
+          zIndex: 1,
+        }}
+      />
 
-      {/* Bottom Bar */}
-      <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", padding: "1.25rem 0" }}>
-        <div className="container" style={{
-          display: "flex",
-          flexWrap: "wrap",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: "0.75rem",
-        }}>
-          <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.8rem" }}>
-            © {year} HDZ Revamped. All rights reserved. CA License {CONTACT.license}
+      {/* ── Bottom Bar ─────────────────────────────── */}
+      <div style={{ position: "relative", zIndex: 1 }}>
+        <div
+          className="container"
+          style={{
+            padding: "1.5rem",
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "1rem",
+          }}
+        >
+          <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.8rem" }}>
+            © {year} HDZ Revamped. All rights reserved.{" "}
+            <span style={{ color: "rgba(255,255,255,0.2)" }}>
+              CA License {CONTACT.license}
+            </span>
           </p>
-          <div style={{ display: "flex", gap: "1.25rem" }}>
-            <Link href="/privacy" style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.8rem", transition: "color 0.15s" }} className="hover:text-white">
+
+          <div style={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
+            <Link
+              href="/privacy"
+              style={{
+                color: "rgba(255,255,255,0.3)",
+                fontSize: "0.8rem",
+                transition: "color 0.2s ease",
+              }}
+              className="hover:text-white"
+            >
               Privacy Policy
             </Link>
-            <Link href="/terms" style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.8rem", transition: "color 0.15s" }} className="hover:text-white">
+            <Link
+              href="/terms"
+              style={{
+                color: "rgba(255,255,255,0.3)",
+                fontSize: "0.8rem",
+                transition: "color 0.2s ease",
+              }}
+              className="hover:text-white"
+            >
               Terms of Service
             </Link>
           </div>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 900px) {
+          footer .container > div:first-of-type {
+            grid-template-columns: 1fr 1fr !important;
+            gap: 2.5rem !important;
+          }
+        }
+        @media (max-width: 600px) {
+          footer .container > div:first-of-type {
+            grid-template-columns: 1fr !important;
+          }
+        }
+        .footer-link:hover svg {
+          opacity: 1;
+        }
+      `}</style>
     </footer>
   );
 }
