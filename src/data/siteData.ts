@@ -167,7 +167,8 @@ export const PORTFOLIO = [
     title: "Blue Door Installation",
     category: "Exterior",
     label: "After",
-    filename: "blue-doors.jpg",
+    // Temporary placeholder image URL - replace with actual client photo later
+    filename: "https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=1469&auto=format&fit=crop",
     alt: "Blue exterior doors freshly painted by HDZ Revamped San Diego",
   },
   {
@@ -183,7 +184,7 @@ export const PORTFOLIO = [
     title: "Kitchen Before",
     category: "Kitchen",
     label: "Before",
-    filename: "kitchen-before.jpg",
+    filename: "kitchen-before.jpeg",
     alt: "Kitchen before cabinet remodel by HDZ Revamped San Diego",
   },
   {
@@ -191,7 +192,8 @@ export const PORTFOLIO = [
     title: "Concrete Project",
     category: "Concrete",
     label: "After",
-    filename: "concrete-work.jpg",
+    // Temporary placeholder image URL - replace with actual client photo later
+    filename: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=1470&auto=format&fit=crop",
     alt: "Concrete finishing and coating work by HDZ Revamped San Diego",
   },
   {
@@ -199,7 +201,8 @@ export const PORTFOLIO = [
     title: "Cabinet Painting",
     category: "Interior",
     label: "After",
-    filename: "cabinet-painting.jpg",
+    // Temporary placeholder image URL - replace with actual client photo later
+    filename: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=1470&auto=format&fit=crop",
     alt: "Cabinet painting with smooth factory finish by HDZ Revamped San Diego",
   },
   {
@@ -215,7 +218,8 @@ export const PORTFOLIO = [
     title: "Drywall Repair",
     category: "Drywall",
     label: "After",
-    filename: "drywall-repair.jpg",
+    // Temporary placeholder image URL - replace with actual client photo later
+    filename: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1631&auto=format&fit=crop",
     alt: "Seamless drywall repair completed by HDZ Revamped San Diego",
   },
   {
@@ -223,7 +227,8 @@ export const PORTFOLIO = [
     title: "Interior Paint Job",
     category: "Interior",
     label: "After",
-    filename: "interior-painting.jpg",
+    // Temporary placeholder image URL - replace with actual client photo later
+    filename: "https://images.unsplash.com/photo-1562663474-6cbb3eaa4d14?q=80&w=1374&auto=format&fit=crop",
     alt: "Interior painting project completed by HDZ Revamped San Diego",
   },
   {
@@ -231,7 +236,8 @@ export const PORTFOLIO = [
     title: "Drywall Installation",
     category: "Drywall",
     label: "After",
-    filename: "drywall-install.jpg",
+    // Temporary placeholder image URL - replace with actual client photo later
+    filename: "https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=1469&auto=format&fit=crop",
     alt: "New drywall installation by HDZ Revamped San Diego",
   },
   {
@@ -239,7 +245,8 @@ export const PORTFOLIO = [
     title: "Exterior Before",
     category: "Exterior",
     label: "Before",
-    filename: "exterior-before.jpg",
+    // Temporary placeholder image URL - replace with actual client photo later
+    filename: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1475&auto=format&fit=crop",
     alt: "Exterior before painting by HDZ Revamped San Diego",
   },
   {
@@ -247,7 +254,8 @@ export const PORTFOLIO = [
     title: "Living Room Repaint",
     category: "Interior",
     label: "After",
-    filename: "living-room.jpg",
+    // Temporary placeholder image URL - replace with actual client photo later
+    filename: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=1558&auto=format&fit=crop",
     alt: "Living room painting by HDZ Revamped San Diego",
   },
   {
@@ -255,7 +263,8 @@ export const PORTFOLIO = [
     title: "Concrete Patio",
     category: "Concrete",
     label: "After",
-    filename: "concrete-patio.jpg",
+    // Temporary placeholder image URL - replace with actual client photo later
+    filename: "https://images.unsplash.com/photo-1533758368940-5a91ee4c6cc0?q=80&w=1469&auto=format&fit=crop",
     alt: "Concrete patio work by HDZ Revamped San Diego",
   },
   {
@@ -263,7 +272,8 @@ export const PORTFOLIO = [
     title: "Cabinet Before",
     category: "Kitchen",
     label: "Before",
-    filename: "cabinet-before.jpg",
+    // Temporary placeholder image URL - replace with actual client photo later
+    filename: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?q=80&w=1470&auto=format&fit=crop",
     alt: "Cabinets before painting by HDZ Revamped San Diego",
   },
   {
@@ -271,7 +281,8 @@ export const PORTFOLIO = [
     title: "Trim & Doors Paint",
     category: "Interior",
     label: "After",
-    filename: "trim-doors.jpg",
+    // Temporary placeholder image URL - replace with actual client photo later
+    filename: "https://images.unsplash.com/photo-1534349735904-20a672f22b8d?q=80&w=1470&auto=format&fit=crop",
     alt: "Trim and door painting by HDZ Revamped San Diego",
   },
   {
@@ -279,7 +290,8 @@ export const PORTFOLIO = [
     title: "Drywall Repair Before",
     category: "Drywall",
     label: "Before",
-    filename: "drywall-before.jpg",
+    // Temporary placeholder image URL - replace with actual client photo later
+    filename: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1631&auto=format&fit=crop",
     alt: "Drywall damage before repair by HDZ Revamped San Diego",
   },
   {
@@ -287,7 +299,8 @@ export const PORTFOLIO = [
     title: "Exterior Stucco Paint",
     category: "Exterior",
     label: "After",
-    filename: "stucco-paint.jpg",
+    // Temporary placeholder image URL - replace with actual client photo later
+    filename: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1470&auto=format&fit=crop",
     alt: "Exterior stucco painting by HDZ Revamped San Diego",
   },
   {
@@ -295,7 +308,8 @@ export const PORTFOLIO = [
     title: "Full Room Remodel",
     category: "Interior",
     label: "After",
-    filename: "full-room.jpg",
+    // Temporary placeholder image URL - replace with actual client photo later
+    filename: "https://images.unsplash.com/photo-1616046229478-9901c5536a45?q=80&w=1480&auto=format&fit=crop",
     alt: "Full room painting and drywall remodel by HDZ Revamped San Diego",
   },
 ];

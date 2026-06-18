@@ -1,104 +1,138 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import Image from "next/image";
+import { X, ZoomIn, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { X, ArrowRight, ZoomIn } from "lucide-react";
 import { PORTFOLIO } from "@/data/siteData";
+import BeforeAfterSlider from "@/components/BeforeAfterSlider";
 
 const CATEGORIES = ["All", "Interior", "Exterior", "Drywall", "Kitchen", "Concrete"];
 
+const PAIRS_CONFIG = [
+  { after: 1, before: 2 },
+];
+
+type PortfolioItem = typeof PORTFOLIO[0];
+
+interface PairedProject {
+  type: "paired";
+  id: string;
+  category: string;
+  after: PortfolioItem;
+  before: PortfolioItem;
+}
+
+interface SingleProject {
+  type: "single";
+  id: string;
+  category: string;
+  item: PortfolioItem;
+}
+
+type ProjectDisplay = PairedProject | SingleProject;
+
 export default function ProjectsPageClient() {
   const [activeCategory, setActiveCategory] = useState("All");
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [lightboxItem, setLightboxItem] = useState<PortfolioItem | null>(null);
 
-  const filtered =
-    activeCategory === "All"
-      ? PORTFOLIO
-      : PORTFOLIO.filter((p) => p.category === activeCategory);
+  // Group portfolio items into paired and single
+  const processedProjects = useMemo(() => {
+    const projects: ProjectDisplay[] = [];
+    const processedIds = new Set<number>();
 
-  const openLightbox = useCallback((idx: number) => {
-    setLightboxIndex(idx);
+    // First process pairs
+    PAIRS_CONFIG.forEach((pair) => {
+      const afterItem = PORTFOLIO.find((p) => p.id === pair.after);
+      const beforeItem = PORTFOLIO.find((p) => p.id === pair.before);
+      if (afterItem && beforeItem) {
+        projects.push({
+          type: "paired",
+          id: `pair-${afterItem.id}-${beforeItem.id}`,
+          category: afterItem.category,
+          after: afterItem,
+          before: beforeItem,
+        });
+        processedIds.add(afterItem.id);
+        processedIds.add(beforeItem.id);
+      }
+    });
+
+    // Then add the rest
+    PORTFOLIO.forEach((item) => {
+      if (!processedIds.has(item.id)) {
+        projects.push({
+          type: "single",
+          id: `single-${item.id}`,
+          category: item.category,
+          item,
+        });
+      }
+    });
+
+    return projects;
+  }, []);
+
+  const filtered = useMemo(() => {
+    if (activeCategory === "All") return processedProjects;
+    return processedProjects.filter((p) => p.category === activeCategory);
+  }, [activeCategory, processedProjects]);
+
+  const openLightbox = useCallback((item: PortfolioItem) => {
+    setLightboxItem(item);
     document.body.style.overflow = "hidden";
   }, []);
 
   const closeLightbox = useCallback(() => {
-    setLightboxIndex(null);
+    setLightboxItem(null);
     document.body.style.overflow = "";
   }, []);
 
-  const goNext = useCallback(() => {
-    setLightboxIndex((prev) => (prev !== null ? (prev + 1) % filtered.length : 0));
-  }, [filtered.length]);
-
-  const goPrev = useCallback(() => {
-    setLightboxIndex((prev) =>
-      prev !== null ? (prev - 1 + filtered.length) % filtered.length : 0
-    );
-  }, [filtered.length]);
-
-  const activeLightboxItem = lightboxIndex !== null ? filtered[lightboxIndex] : null;
+  const getImageUrl = (src: string) => {
+    if (src.startsWith("http")) return src;
+    return `/images/portfolio/${src}`;
+  };
 
   return (
     <>
       {/* ── PAGE HERO ─────────────────────────────────────────── */}
-      <section className="page-hero">
-        <div className="container">
+      <section className="page-hero pb-20 pt-32 lg:pt-40 text-center">
+        <div className="container relative z-10">
           <span
-            className="section-label"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-6"
             style={{
-              color: "var(--blue)",
-              background: "rgba(43,93,232,0.2)",
-              border: "1px solid rgba(43,93,232,0.4)",
+              color: "var(--gold)",
+              background: "rgba(212,168,74,0.15)",
+              border: "1px solid rgba(212,168,74,0.3)",
             }}
           >
-            Our Work
+            Portfolio
           </span>
-          <h1 style={{ color: "#fff", marginTop: "0.75rem", marginBottom: "1rem" }}>
-            Our Projects
+          <h1 className="text-white text-5xl md:text-6xl font-extrabold tracking-tight mb-6 font-['Plus_Jakarta_Sans']">
+            Our Masterpieces
           </h1>
-          <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "1.125rem", maxWidth: "560px", margin: "0 auto" }}>
-            See the HDZ Revamped difference — before &amp; after painting and drywall
-            transformations throughout San Diego County.
+          <p className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+            Experience the HDZ Revamped difference. Drag the sliders to see our stunning before &amp; after transformations across San Diego County.
           </p>
         </div>
       </section>
 
       {/* ── FILTER BAR ────────────────────────────────────────── */}
-      <section style={{ background: "var(--white)", borderBottom: "1px solid var(--gray-border)", position: "sticky", top: "72px", zIndex: 30 }}>
-        <div className="container" style={{ padding: "0 1.25rem" }}>
-          <div
-            style={{
-              display: "flex",
-              gap: "0.25rem",
-              overflowX: "auto",
-              padding: "0.875rem 0",
-              scrollbarWidth: "none",
-            }}
-          >
+      <div className="projects-filter-bar">
+        <div className="container px-4">
+          <div className="flex gap-2 overflow-x-auto py-4 scrollbar-none items-center justify-start md:justify-center">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
                 id={`filter-${cat.toLowerCase()}`}
-                style={{
-                  padding: "0.5rem 1.1rem",
-                  borderRadius: "100px",
-                  border: "1.5px solid",
-                  borderColor: activeCategory === cat ? "var(--blue)" : "var(--gray-border)",
-                  background: activeCategory === cat ? "var(--blue)" : "transparent",
-                  color: activeCategory === cat ? "#fff" : "var(--navy)",
-                  fontWeight: 600,
-                  fontSize: "0.875rem",
-                  whiteSpace: "nowrap",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease",
-                  fontFamily: "Inter, sans-serif",
-                }}
+                className={`projects-filter-btn ${
+                  activeCategory === cat ? "projects-filter-btn--active" : ""
+                }`}
               >
                 {cat}
                 {activeCategory === cat && (
-                  <span style={{ marginLeft: "0.4rem", fontSize: "0.75rem", opacity: 0.85 }}>
+                  <span className="projects-filter-count">
                     ({filtered.length})
                   </span>
                 )}
@@ -106,297 +140,455 @@ export default function ProjectsPageClient() {
             ))}
           </div>
         </div>
-      </section>
+      </div>
 
       {/* ── GALLERY GRID ──────────────────────────────────────── */}
-      <section className="section-padding" style={{ background: "var(--gray-bg)" }}>
+      <section className="projects-gallery-section">
         <div className="container">
           {filtered.length === 0 ? (
-            <div style={{ textAlign: "center", padding: "4rem 0", color: "var(--gray-text)" }}>
-              <p>No projects in this category yet. Check back soon!</p>
+            <div className="text-center py-32 bg-white rounded-3xl border border-gray-100 shadow-sm">
+              <h3 className="text-2xl font-bold text-gray-400 mb-2">No projects found</h3>
+              <p className="text-gray-500">Try selecting a different category.</p>
             </div>
           ) : (
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-                gap: "1rem",
-              }}
-            >
-              {filtered.map((item, idx) => (
-                <button
-                  key={item.id}
-                  onClick={() => openLightbox(idx)}
-                  id={`portfolio-item-${item.id}`}
-                  aria-label={`View ${item.title} — click to enlarge`}
-                  style={{
-                    position: "relative",
-                    display: "block",
-                    borderRadius: "var(--radius-lg)",
-                    overflow: "hidden",
-                    aspectRatio: "4/3",
-                    background: "var(--navy)",
-                    cursor: "zoom-in",
-                    border: "none",
-                    padding: 0,
-                    width: "100%",
-                    textAlign: "left",
-                  }}
-                >
-                  <Image
-                    src={`/images/portfolio/${item.filename}`}
-                    alt={item.alt}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    style={{
-                      objectFit: "cover",
-                      transition: "transform 0.4s ease",
-                    }}
-                    className="gallery-img"
-                  />
-
-                  {/* Hover overlay */}
-                  <div
-                    className="gallery-overlay"
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      background: "rgba(26,26,46,0.6)",
-                      opacity: 0,
-                      transition: "opacity 0.3s ease",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <ZoomIn size={36} color="#fff" strokeWidth={1.5} />
-                  </div>
-
-                  {/* Bottom info */}
-                  <div
-                    style={{
-                      position: "absolute",
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      padding: "1rem 1.1rem 0.9rem",
-                      background: "linear-gradient(to top, rgba(26,26,46,0.85) 0%, transparent 100%)",
-                    }}
-                  >
-                    <span
-                      style={{
-                        display: "inline-block",
-                        padding: "0.2rem 0.6rem",
-                        borderRadius: "100px",
-                        fontSize: "0.7rem",
-                        fontWeight: 700,
-                        letterSpacing: "0.05em",
-                        textTransform: "uppercase",
-                        background: item.label === "Before" ? "rgba(245, 158, 11, 0.9)" : "rgba(43,93,232,0.9)",
-                        color: "#fff",
-                        marginBottom: "0.3rem",
-                      }}
+            <div className="projects-grid">
+              {filtered.map((project) => {
+                if (project.type === "paired") {
+                  return (
+                    <div
+                      key={project.id}
+                      className="projects-card projects-card--paired"
                     >
-                      {item.label}
-                    </span>
-                    <div style={{ color: "#fff", fontWeight: 600, fontSize: "0.875rem" }}>
-                      {item.title}
+                      {/* Before/After Slider fills the image zone */}
+                      <div className="projects-card__media">
+                        <BeforeAfterSlider
+                          beforeImage={project.before.filename}
+                          afterImage={project.after.filename}
+                          beforeAlt={project.before.alt}
+                          afterAlt={project.after.alt}
+                        />
+                      </div>
+                      {/* Info overlay — lives outside the media box */}
+                      <div className="projects-card__info">
+                        <span className="projects-card__badge projects-card__badge--gold">
+                          {project.category} Transformation
+                        </span>
+                        <h3 className="projects-card__title">
+                          {project.after.title}
+                        </h3>
+                      </div>
                     </div>
-                    <div style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.75rem" }}>
-                      {item.category}
+                  );
+                }
+
+                // Single Project
+                return (
+                  <button
+                    key={project.id}
+                    onClick={() => openLightbox(project.item)}
+                    className="projects-card projects-card--single"
+                    aria-label={`View ${project.item.title}`}
+                  >
+                    {/* Image zone */}
+                    <div className="projects-card__media">
+                      <Image
+                        src={getImageUrl(project.item.filename)}
+                        alt={project.item.alt}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                      {/* Gradient overlay */}
+                      <div className="projects-card__overlay" />
+                      {/* Zoom icon */}
+                      <div className="projects-card__zoom-icon">
+                        <div className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white">
+                          <ZoomIn size={24} strokeWidth={1.5} />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </button>
-              ))}
+                    {/* Info — below image, not overlapping */}
+                    <div className="projects-card__info">
+                      <span className="projects-card__badge">
+                        {project.category}
+                      </span>
+                      <h3 className="projects-card__title">
+                        {project.item.title}
+                      </h3>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           )}
         </div>
       </section>
 
-      <style>{`
-        button:hover .gallery-img { transform: scale(1.06); }
-        button:hover .gallery-overlay { opacity: 1 !important; }
-      `}</style>
+      {/* ── CTA ───────────────────────────────────────────────── */}
+      <section className="projects-cta-section">
+        <div className="container mx-auto px-4">
+          <div className="projects-cta-box">
+            {/* Decorative radial glow — pointer-events-none, behind everything */}
+            <div className="projects-cta-glow" aria-hidden="true" />
+            <div className="relative z-10">
+              <h2 className="projects-cta-heading">
+                Impressed by the results?
+              </h2>
+              <p className="projects-cta-subtext">
+                Let&apos;s create the next stunning transformation together. Get in touch for a free, no-pressure quote.
+              </p>
+              <Link
+                href="/contact"
+                className="projects-cta-btn"
+              >
+                Start Your Project <ArrowRight size={20} />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      {/* ── LIGHTBOX ──────────────────────────────────────────── */}
-      {activeLightboxItem && (
+      {/* ── LIGHTBOX (Only for Single Projects) ─────────────── */}
+      {lightboxItem && (
         <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 1000,
-            background: "rgba(0,0,0,0.92)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "1rem",
-          }}
+          className="fixed inset-0 z-[1000] bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center"
+          style={{ animation: "fadeIn 0.3s ease" }}
           onClick={closeLightbox}
           role="dialog"
           aria-modal="true"
-          aria-label={activeLightboxItem.title}
         >
-          {/* Close */}
           <button
             onClick={closeLightbox}
-            id="lightbox-close-btn"
-            style={{
-              position: "absolute",
-              top: "1rem",
-              right: "1rem",
-              background: "rgba(255,255,255,0.1)",
-              border: "1px solid rgba(255,255,255,0.2)",
-              borderRadius: "50%",
-              width: "44px",
-              height: "44px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#fff",
-              cursor: "pointer",
-            }}
+            className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white transition-colors z-50"
             aria-label="Close lightbox"
           >
-            <X size={20} />
+            <X size={24} />
           </button>
 
-          {/* Prev */}
-          <button
-            onClick={(e) => { e.stopPropagation(); goPrev(); }}
-            id="lightbox-prev-btn"
-            style={{
-              position: "absolute",
-              left: "1rem",
-              top: "50%",
-              transform: "translateY(-50%)",
-              background: "rgba(255,255,255,0.1)",
-              border: "1px solid rgba(255,255,255,0.2)",
-              borderRadius: "50%",
-              width: "48px",
-              height: "48px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#fff",
-              cursor: "pointer",
-              fontSize: "1.5rem",
-            }}
-            aria-label="Previous image"
-          >
-            ‹
-          </button>
-
-          {/* Next */}
-          <button
-            onClick={(e) => { e.stopPropagation(); goNext(); }}
-            id="lightbox-next-btn"
-            style={{
-              position: "absolute",
-              right: "1rem",
-              top: "50%",
-              transform: "translateY(-50%)",
-              background: "rgba(255,255,255,0.1)",
-              border: "1px solid rgba(255,255,255,0.2)",
-              borderRadius: "50%",
-              width: "48px",
-              height: "48px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#fff",
-              cursor: "pointer",
-              fontSize: "1.5rem",
-            }}
-            aria-label="Next image"
-          >
-            ›
-          </button>
-
-          {/* Image */}
           <div
+            className="relative w-full max-w-5xl px-4 md:px-12 flex flex-col gap-6"
             onClick={(e) => e.stopPropagation()}
-            style={{
-              position: "relative",
-              maxWidth: "900px",
-              width: "100%",
-              maxHeight: "80vh",
-              aspectRatio: "4/3",
-              borderRadius: "12px",
-              overflow: "hidden",
-              background: "#000",
-            }}
           >
-            <Image
-              src={`/images/portfolio/${activeLightboxItem.filename}`}
-              alt={activeLightboxItem.alt}
-              fill
-              sizes="90vw"
-              style={{ objectFit: "contain" }}
-              priority
-            />
-          </div>
+            <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10"
+              style={{ aspectRatio: "16/9" }}>
+              <Image
+                src={getImageUrl(lightboxItem.filename)}
+                alt={lightboxItem.alt}
+                fill
+                sizes="100vw"
+                className="object-contain bg-black/50"
+                priority
+              />
+            </div>
 
-          {/* Caption */}
-          <div
-            style={{
-              position: "absolute",
-              bottom: "1.5rem",
-              left: "50%",
-              transform: "translateX(-50%)",
-              textAlign: "center",
-              color: "#fff",
-              background: "rgba(0,0,0,0.5)",
-              borderRadius: "8px",
-              padding: "0.6rem 1.25rem",
-              whiteSpace: "nowrap",
-            }}
-          >
-            <span
-              style={{
-                display: "inline-block",
-                padding: "0.15rem 0.5rem",
-                borderRadius: "100px",
-                fontSize: "0.7rem",
-                fontWeight: 700,
-                background: activeLightboxItem.label === "Before" ? "rgba(245,158,11,0.9)" : "rgba(43,93,232,0.9)",
-                marginRight: "0.5rem",
-              }}
-            >
-              {activeLightboxItem.label}
-            </span>
-            <strong>{activeLightboxItem.title}</strong>
-            {" · "}
-            <span style={{ opacity: 0.75 }}>{activeLightboxItem.category}</span>
-            {lightboxIndex !== null && (
-              <span style={{ opacity: 0.5, marginLeft: "0.75rem", fontSize: "0.8rem" }}>
-                {lightboxIndex + 1} / {filtered.length}
-              </span>
-            )}
+            <div className="text-center text-white px-4">
+              <h3 className="text-xl md:text-2xl font-bold font-['Plus_Jakarta_Sans'] mb-1">{lightboxItem.title}</h3>
+              <p className="text-white/60 tracking-wider text-sm uppercase">{lightboxItem.category}</p>
+            </div>
           </div>
         </div>
       )}
 
-      {/* ── CTA ───────────────────────────────────────────────── */}
-      <section
-        style={{
-          background: "linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%)",
-          padding: "5rem 0",
-          textAlign: "center",
-        }}
-      >
-        <div className="container">
-          <h2 style={{ color: "#fff", marginBottom: "1rem" }}>
-            Ready to Start Your Project?
-          </h2>
-          <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "1.05rem", marginBottom: "2.5rem", maxWidth: "480px", margin: "0 auto 2.5rem" }}>
-            Get in touch today for a free quote. We&apos;d love to bring the same quality
-            results to your home or business.
-          </p>
-          <Link href="/contact" className="btn btn-white" id="projects-cta-btn" style={{ fontSize: "1.05rem" }}>
-            Start Your Project <ArrowRight size={18} />
-          </Link>
-        </div>
-      </section>
+      {/* ── PAGE-SCOPED STYLES ─────────────────────────────── */}
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+
+        /* ── Filter Bar ─────────────────────── */
+        .projects-filter-bar {
+          position: sticky;
+          top: 72px;
+          z-index: 30;
+          background: rgba(255,255,255,0.92);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border-bottom: 1px solid rgba(0,0,0,0.08);
+          box-shadow: 0 2px 12px rgba(8,26,55,0.07);
+        }
+
+        .projects-filter-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          padding: 0.5rem 1.25rem;
+          border-radius: 9999px;
+          font-size: 0.875rem;
+          font-weight: 600;
+          white-space: nowrap;
+          transition: all 0.25s ease;
+          cursor: pointer;
+          border: 1.5px solid #e2e8f0;
+          background: transparent;
+          color: #475569;
+          font-family: inherit;
+        }
+
+        .projects-filter-btn:hover {
+          background: #f1f5f9;
+          border-color: #cbd5e1;
+          color: #1e293b;
+        }
+
+        .projects-filter-btn--active {
+          background: #295DFF !important;
+          color: #ffffff !important;
+          border-color: #295DFF !important;
+          box-shadow: 0 4px 14px rgba(41,93,255,0.35);
+          transform: scale(1.04);
+        }
+
+        .projects-filter-count {
+          font-size: 0.75rem;
+          font-weight: 500;
+          opacity: 0.85;
+        }
+
+        /* ── Gallery Section ────────────────── */
+        .projects-gallery-section {
+          padding: 4rem 0 5rem;
+          background: #f4f6fb;
+        }
+
+        /* ── Bento Grid ─────────────────────── */
+        .projects-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 1.25rem;
+        }
+
+        @media (min-width: 640px) {
+          .projects-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+          }
+        }
+
+        @media (min-width: 1024px) {
+          .projects-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+          }
+        }
+
+        /* ── Cards ──────────────────────────── */
+        .projects-card {
+          display: flex;
+          flex-direction: column;
+          background: #fff;
+          border-radius: 1.25rem;
+          overflow: hidden;
+          box-shadow: 0 2px 12px rgba(8,26,55,0.08);
+          transition: box-shadow 0.3s ease, transform 0.3s ease;
+          text-align: left;
+          cursor: default;
+          border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .projects-card--single {
+          cursor: zoom-in;
+        }
+
+        .projects-card:hover {
+          box-shadow: 0 12px 36px rgba(8,26,55,0.14);
+          transform: translateY(-3px);
+        }
+
+        /* Paired card spans 2 cols on md+ */
+        .projects-card--paired {
+          grid-column: 1 / -1;
+        }
+
+        @media (min-width: 640px) {
+          .projects-card--paired {
+            grid-column: span 2;
+          }
+        }
+
+        @media (min-width: 1024px) {
+          .projects-card--paired {
+            grid-column: span 2;
+          }
+        }
+
+        /* ── Card media zone ────────────────── */
+        .projects-card__media {
+          position: relative;
+          width: 100%;
+          /* 4:3 — much friendlier to portrait/near-square photos than 16:9 */
+          aspect-ratio: 4 / 3;
+          overflow: hidden;
+          flex-shrink: 0;
+          background: #e2e8f0;
+        }
+
+        /* Paired slider gets a slightly taller box (3:2) so both portrait
+           bedroom images align better with less aggressive cropping */
+        .projects-card--paired .projects-card__media {
+          aspect-ratio: 3 / 2;
+        }
+
+        /* Overlay gradient on single cards */
+        .projects-card__overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(to top, rgba(8,26,55,0.55) 0%, rgba(8,26,55,0.15) 55%, transparent 100%);
+          opacity: 0.7;
+          transition: opacity 0.3s ease;
+          z-index: 1;
+          pointer-events: none;
+        }
+
+        .projects-card--single:hover .projects-card__overlay {
+          opacity: 0.9;
+        }
+
+        /* Zoom icon hover reveal */
+        .projects-card__zoom-icon {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          z-index: 2;
+          pointer-events: none;
+        }
+
+        .projects-card--single:hover .projects-card__zoom-icon {
+          opacity: 1;
+        }
+
+        /* ── Card info zone ─────────────────── */
+        .projects-card__info {
+          padding: 1rem 1.25rem 1.25rem;
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          flex-shrink: 0;
+        }
+
+        /* ── Badge pill ─────────────────────── */
+        .projects-card__badge {
+          display: inline-flex;
+          align-items: center;
+          width: fit-content;
+          padding: 0.25rem 0.75rem;
+          border-radius: 9999px;
+          font-size: 0.7rem;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          background: rgba(41,93,255,0.1);
+          color: #295DFF;
+          border: 1px solid rgba(41,93,255,0.2);
+        }
+
+        .projects-card__badge--gold {
+          background: rgba(212,168,74,0.12);
+          color: #a07820;
+          border-color: rgba(212,168,74,0.35);
+        }
+
+        /* ── Card title ─────────────────────── */
+        .projects-card__title {
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-size: 1rem;
+          font-weight: 700;
+          color: #0d1b2e;
+          line-height: 1.35;
+          margin: 0;
+          letter-spacing: -0.015em;
+        }
+
+        @media (min-width: 1024px) {
+          .projects-card__info {
+            padding: 1.1rem 1.5rem 1.4rem;
+          }
+          .projects-card__title {
+            font-size: 1.05rem;
+          }
+        }
+
+        /* ── CTA Section ────────────────────── */
+        .projects-cta-section {
+          padding: 5rem 0 6rem;
+          background: #f4f6fb;
+        }
+
+        .projects-cta-box {
+          position: relative;
+          overflow: hidden;
+          border-radius: 2rem;
+          background: #081A37;
+          padding: 4rem 2rem;
+          text-align: center;
+          box-shadow: 0 24px 80px rgba(8,26,55,0.25);
+          max-width: 900px;
+          margin: 0 auto;
+        }
+
+        @media (min-width: 768px) {
+          .projects-cta-box {
+            padding: 5.5rem 4rem;
+          }
+        }
+
+        .projects-cta-glow {
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(ellipse at 80% 20%, rgba(41,93,255,0.25) 0%, transparent 55%);
+          pointer-events: none;
+          z-index: 0;
+        }
+
+        .projects-cta-heading {
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-size: clamp(1.75rem, 4vw, 3rem);
+          font-weight: 800;
+          color: #ffffff;
+          margin-bottom: 1.25rem;
+          line-height: 1.15;
+          letter-spacing: -0.03em;
+        }
+
+        .projects-cta-subtext {
+          font-size: 1rem;
+          color: rgba(255,255,255,0.78);
+          max-width: 520px;
+          margin: 0 auto 2.5rem;
+          line-height: 1.75;
+        }
+
+        @media (min-width: 768px) {
+          .projects-cta-subtext {
+            font-size: 1.1rem;
+          }
+        }
+
+        .projects-cta-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.9rem 2.25rem;
+          border-radius: 9999px;
+          background: linear-gradient(135deg, #D4A84A 0%, #e8c56e 100%);
+          color: #081A37;
+          font-weight: 800;
+          font-size: 1rem;
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          transition: all 0.25s ease;
+          box-shadow: 0 8px 24px rgba(212,168,74,0.35);
+          text-decoration: none;
+        }
+
+        .projects-cta-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 14px 36px rgba(212,168,74,0.45);
+        }
+      `}</style>
     </>
   );
 }

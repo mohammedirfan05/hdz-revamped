@@ -906,7 +906,7 @@ export default function HomePage() {
                   id={`home-portfolio-${item.id}`}
                 >
                   <Image
-                    src={`/images/portfolio/${item.filename}`}
+                    src={item.filename.startsWith("http") ? item.filename : `/images/portfolio/${item.filename}`}
                     alt={item.alt}
                     fill
                     sizes="(max-width: 768px) 100vw, 33vw"

@@ -118,7 +118,7 @@ export default function Footer() {
                 fontSize: "0.9rem",
                 lineHeight: 1.75,
                 marginBottom: "1.75rem",
-                color: "rgba(255,255,255,0.5)",
+                color: "rgba(255,255,255,0.8)",
                 maxWidth: "280px",
               }}
             >
@@ -157,7 +157,7 @@ export default function Footer() {
               <div
                 style={{
                   fontSize: "0.7rem",
-                  color: "rgba(255,255,255,0.3)",
+                  color: "rgba(255,255,255,0.6)",
                   fontWeight: 700,
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
@@ -175,7 +175,7 @@ export default function Footer() {
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "0.5rem",
-                  color: "rgba(255,255,255,0.6)",
+                  color: "rgba(255,255,255,0.8)",
                   fontSize: "0.875rem",
                   fontWeight: 600,
                   transition: "color 0.2s ease",
@@ -214,7 +214,7 @@ export default function Footer() {
                   <Link
                     href="/services"
                     style={{
-                      color: "rgba(255,255,255,0.52)",
+                      color: "rgba(255,255,255,0.8)",
                       fontSize: "0.875rem",
                       transition: "color 0.2s ease",
                       display: "flex",
@@ -262,7 +262,7 @@ export default function Footer() {
                   <Link
                     href={link.href}
                     style={{
-                      color: "rgba(255,255,255,0.52)",
+                      color: "rgba(255,255,255,0.8)",
                       fontSize: "0.875rem",
                       transition: "color 0.2s ease",
                       display: "flex",
@@ -435,7 +435,7 @@ export default function Footer() {
               <div
                 style={{
                   fontSize: "0.65rem",
-                  color: "rgba(255,255,255,0.35)",
+                  color: "rgba(255,255,255,0.6)",
                   fontWeight: 700,
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
@@ -447,7 +447,7 @@ export default function Footer() {
               <p
                 style={{
                   fontSize: "0.8rem",
-                  color: "rgba(255,255,255,0.45)",
+                  color: "rgba(255,255,255,0.7)",
                   lineHeight: 1.65,
                 }}
               >
@@ -461,7 +461,7 @@ export default function Footer() {
       {/* ── Separator ──────────────────────────────── */}
       <div
         style={{
-          borderTop: "1px solid rgba(255,255,255,0.06)",
+          borderTop: "1px solid rgba(255,255,255,0.1)",
           position: "relative",
           zIndex: 1,
         }}
@@ -480,9 +480,9 @@ export default function Footer() {
             gap: "1rem",
           }}
         >
-          <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.8rem" }}>
+          <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.8rem" }}>
             © {year} HDZ Revamped. All rights reserved.{" "}
-            <span style={{ color: "rgba(255,255,255,0.2)" }}>
+            <span style={{ color: "rgba(255,255,255,0.5)" }}>
               CA License {CONTACT.license}
             </span>
           </p>
@@ -491,7 +491,7 @@ export default function Footer() {
             <Link
               href="/privacy"
               style={{
-                color: "rgba(255,255,255,0.3)",
+                color: "rgba(255,255,255,0.6)",
                 fontSize: "0.8rem",
                 transition: "color 0.2s ease",
               }}
@@ -502,7 +502,7 @@ export default function Footer() {
             <Link
               href="/terms"
               style={{
-                color: "rgba(255,255,255,0.3)",
+                color: "rgba(255,255,255,0.6)",
                 fontSize: "0.8rem",
                 transition: "color 0.2s ease",
               }}
